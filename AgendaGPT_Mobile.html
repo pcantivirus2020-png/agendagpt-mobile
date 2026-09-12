@@ -136,13 +136,77 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
 @media (max-width:430px) { body{padding:6px;} .contenedor{padding:10px;} .botones{grid-template-columns:1fr;} .botones button:first-child{grid-column:auto;} .form-botones{grid-template-columns:1fr;} #cuerpoTabla tr td{font-size:12px;} .acciones{grid-template-columns:1fr 1fr 38px;} }
 @media (min-width:721px) { body{padding:20px;} .contenedor{margin-top:10px;} }
 @media print { body{padding:0;background:#fff;} .contenedor{box-shadow:none;max-width:none;} .botones,.filtros,.formulario,.acciones,.modal{display:none!important;} #tablaAgenda thead{display:table-header-group;} #tablaAgenda,#tablaAgenda tbody,#tablaAgenda tr,#tablaAgenda td,#tablaAgenda th{display:table;} }
+
+/* =========================================================
+   TOAST — aviso flotante de cambio de estado
+   ========================================================= */
+.toast-container {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+    pointer-events: none;
+    padding: 0 12px;
+    max-width: 100vw;
+}
+.toast {
+    pointer-events: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #1e293b;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform .28s ease, opacity .28s ease;
+    max-width: 92vw;
+    text-align: left;
+    line-height: 1.35;
+}
+.toast.visible {
+    transform: translateY(0);
+    opacity: 1;
+}
+.toast .toast-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+.toast .toast-text { flex: 1; min-width: 0; }
+.toast .toast-title {
+    display: block;
+    font-weight: 800;
+    font-size: 13px;
+    margin-bottom: 2px;
+}
+.toast .toast-sub {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    color: #cbd5e1;
+    margin-top: 2px;
+    word-break: break-word;
+}
+.toast.toast-pendiente { background: #a1000e; }
+.toast.toast-proceso   { background: #8a5a00; }
+.toast.toast-concluido { background: #1f6b34; }
+.toast.toast-info      { background: #1F4E79; }
+
 /* =========================================================
    AJUSTE PARA PC / LAPTOP — se activa solo en pantallas
    anchas (≥ 900 px). No afecta al celular ni a tablets.
    ========================================================= */
 @media (min-width: 900px) {
 
-    /* --- Contenedor: ocupa hasta 1500 px de ancho --- */
     body { padding: 22px; }
     .contenedor {
         max-width: 1500px;
@@ -155,7 +219,6 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
     .encabezado h1 { font-size: 26px; }
     .encabezado p { font-size: 13px; }
 
-    /* --- Dashboard: 5 columnas en una sola fila --- */
     .dashboard {
         grid-template-columns: repeat(5, 1fr);
         gap: 12px;
@@ -166,7 +229,6 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
     .tarjeta .numero { font-size: 26px; }
     .tarjeta .texto { font-size: 11px; }
 
-    /* --- Botones: fila flexible, no rejilla 2×2 --- */
     .botones {
         display: flex;
         flex-wrap: wrap;
@@ -181,7 +243,6 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
     }
     .botones button:first-child { grid-column: auto; }
 
-    /* --- Formulario: 4 columnas --- */
     .form-grid {
         grid-template-columns: repeat(4, 1fr);
         gap: 12px;
@@ -203,14 +264,12 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
     }
     .form-botones button { min-height: auto; }
 
-    /* --- Filtros: búsqueda ancha + 3 selects --- */
     .filtros {
         grid-template-columns: 2fr 1fr 1fr 1fr;
         gap: 10px;
         margin-bottom: 16px;
     }
 
-    /* --- Tabla: vuelve a formato tabla clásico --- */
     .tabla-contenedor { overflow-x: auto; }
     #tablaAgenda {
         display: table;
@@ -255,14 +314,12 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
         padding: 9px;
     }
 
-    /* Elimina las etiquetas ::before que solo aplican al móvil */
     #cuerpoTabla tr td:nth-child(3)::before,
     #cuerpoTabla tr td:nth-child(4)::before,
     #cuerpoTabla tr td:nth-child(5)::before,
     #cuerpoTabla tr td:nth-child(6)::before,
     #cuerpoTabla tr td:nth-child(7)::before { content: none; }
 
-    /* --- Acciones: fila horizontal, no rejilla --- */
     .acciones {
         display: flex;
         flex-wrap: wrap;
@@ -274,9 +331,11 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
         font-size: 11px;
     }
 
-    /* --- Modales: un poco más anchos en PC --- */
     .modal-contenido { max-width: 720px; }
     .pdf-preview { max-height: 220px; font-size: 12px; }
+
+    .toast-container { bottom: 28px; }
+    .toast { font-size: 13px; padding: 12px 20px; }
 }
 </style>
 </head>
@@ -299,7 +358,7 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
     <div class="botones">
         <button class="btn-principal" onclick="mostrarFormulario()">➕ Nuevo asunto</button>
         <button class="btn-principal" onclick="abrirImportadorPDF()">📄 Agregar circular PDF</button>
-        <button class="btn-verde" onclick="exportarExcel()">📊 Exportar Excel</button>
+        <button class="btn-principal" onclick="abrirRespaldo()">💾 Respaldo</button>
         <button class="btn-principal" onclick="descargarWord()">📄 Descargar Word</button>
         <button class="btn-secundario" onclick="window.print()">🖨️ Imprimir / PDF</button>
         <button class="btn-rojo" onclick="confirmarBorradoTotal()">🗑️ Borrar todos</button>
@@ -433,6 +492,49 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
     </div>
 </div>
 
+<!-- =========================================================
+     MODAL RESPALDO COMPLETO (JSON)
+========================================================= -->
+<div class="modal" id="modalRespaldo" aria-hidden="true">
+    <div class="modal-contenido">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+            <div>
+                <span class="badge-ia">💾 RESPALDO Y RESTAURACIÓN</span>
+                <h2 style="margin:8px 0 0;color:#1F4E79;">Respaldo completo</h2>
+            </div>
+            <button class="btn-secundario" onclick="cerrarRespaldo()" aria-label="Cerrar">✕</button>
+        </div>
+        <p style="font-size:12px;color:#64748b;margin:8px 0 12px;">
+            El respaldo .json conserva todos los campos de cada asunto (incluidas notas y ligas). Guárdelo en su correo o Google Drive y restáurelo cuando cambie de celular o navegador.
+        </p>
+
+        <div style="background:#f5f8fc;border:1px solid #dce5ef;border-radius:12px;padding:14px;margin-bottom:12px;">
+            <div style="font-weight:800;color:#1F4E79;margin-bottom:6px;">📤 Crear respaldo</div>
+            <div style="font-size:12px;color:#64748b;margin-bottom:10px;">
+                Se descargará un archivo <strong>AgendaGPT_Respaldo_FECHA.json</strong> con los <span id="respaldoCount">0</span> asuntos actuales.
+            </div>
+            <button class="btn-principal" onclick="descargarRespaldo()">💾 Descargar respaldo</button>
+        </div>
+
+        <div style="background:#f5f8fc;border:1px solid #dce5ef;border-radius:12px;padding:14px;">
+            <div style="font-weight:800;color:#1F4E79;margin-bottom:6px;">📂 Restaurar respaldo</div>
+            <div style="font-size:12px;color:#64748b;margin-bottom:10px;">
+                Cargue un archivo .json generado por esta app.
+            </div>
+            <input id="archivoRespaldo" type="file" accept=".json,application/json"
+                   style="width:100%;font-size:14px;"
+                   onchange="procesarRespaldo(this.files[0])">
+            <div id="respaldoStatus" class="pdf-status" style="margin-top:8px;"></div>
+            <div id="respaldoBotones" style="display:none;margin-top:10px;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+                    <button class="btn-verde" onclick="confirmarRestaurar('fusionar')">✅ Fusionar</button>
+                    <button class="btn-naranja" onclick="confirmarRestaurar('reemplazar')">🔄 Reemplazar todo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- MODAL CONFIRMACIÓN -->
 <div class="modal" id="modal">
     <div class="modal-contenido">
@@ -444,6 +546,9 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
         </div>
     </div>
 </div>
+
+<!-- CONTENEDOR DE TOASTS -->
+<div class="toast-container" id="toastContainer"></div>
 
 <script>
 /* ===================== CONFIGURACIÓN ===================== */
@@ -506,6 +611,41 @@ function claseFila(p) { if (p==="Crítica") return "fila-critica"; if (p==="Alta
 function claseEstado(e) { if (e==="Concluido") return "estado-concluido"; if (e==="En proceso") return "estado-proceso"; return "estado-pendiente"; }
 function escapar(t) { if (t===null||t===undefined) return ""; return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
 
+/* ===================== TOAST ===================== */
+function mostrarToast(titulo, subtitulo, tipo) {
+    const contenedor = document.getElementById("toastContainer");
+    if (!contenedor) return;
+
+    const iconos = {
+        pendiente: "🔴",
+        proceso:   "🟡",
+        concluido: "🟢",
+        info:      "ℹ️"
+    };
+    const icono = iconos[tipo] || "ℹ️";
+
+    const toast = document.createElement("div");
+    toast.className = "toast toast-" + (tipo || "info");
+    toast.innerHTML = `
+        <span class="toast-icon">${icono}</span>
+        <span class="toast-text">
+            <span class="toast-title">${escapar(titulo || "")}</span>
+            ${subtitulo ? `<span class="toast-sub">${escapar(subtitulo)}</span>` : ""}
+        </span>
+    `;
+    contenedor.appendChild(toast);
+
+    // Forzar reflow para animación de entrada
+    void toast.offsetHeight;
+    toast.classList.add("visible");
+
+    // Salida después de 2.6 s
+    setTimeout(() => {
+        toast.classList.remove("visible");
+        setTimeout(() => { try { toast.remove(); } catch(_) {} }, 320);
+    }, 2600);
+}
+
 /* ===================== FORMULARIO ===================== */
 function mostrarFormulario() {
     document.getElementById("formulario").classList.add("visible");
@@ -554,14 +694,34 @@ function editarAsunto(id) {
     document.getElementById("estado").value = a.estado;
     window.scrollTo({top:0, behavior:"smooth"});
 }
+
+/* ===================== CAMBIAR ESTADO + TOAST ===================== */
 function cambiarEstado(id) {
     const a = asuntos.find(x => x.id === id);
     if (!a) return;
+
+    const estadoAnterior = a.estado;
     if (a.estado === "Pendiente") a.estado = "En proceso";
     else if (a.estado === "En proceso") a.estado = "Concluido";
     else a.estado = "Pendiente";
-    guardarLocal(); renderizar();
+
+    guardarLocal();
+    renderizar();
+
+    // Aviso toast según el nuevo estado
+    const oficioCorto = (a.oficio || "").length > 40
+        ? a.oficio.slice(0, 40) + "…"
+        : (a.oficio || "Asunto");
+
+    if (a.estado === "Pendiente") {
+        mostrarToast("Estado cambiado a Pendiente", `${oficioCorto} · antes: ${estadoAnterior}`, "pendiente");
+    } else if (a.estado === "En proceso") {
+        mostrarToast("Estado cambiado a En proceso", `${oficioCorto} · antes: ${estadoAnterior}`, "proceso");
+    } else {
+        mostrarToast("Estado cambiado a Concluido", `${oficioCorto} · antes: ${estadoAnterior}`, "concluido");
+    }
 }
+
 function eliminarAsunto(id) {
     const a = asuntos.find(x => x.id === id);
     if (!a) return;
@@ -684,28 +844,13 @@ function actualizarDashboard() {
     document.getElementById("concluidos").textContent = co;
 }
 
-/* ===================== EXPORTAR ===================== */
-function limpiarCSV(v){ return String(v||"").replace(/\t/g," ").replace(/\r?\n/g," "); }
+/* ===================== DESCARGAS ===================== */
 function descargarBlob(blob, nombre) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url; a.download = nombre;
     document.body.appendChild(a); a.click(); a.remove();
     URL.revokeObjectURL(url);
-}
-function exportarExcel() {
-    let csv = "PRIORIDAD\tOFICIO / CIRCULAR\tFECHA DEL OFICIO\tASUNTO / ACTIVIDAD\tFECHA LÍMITE\tTIEMPO\tACCIÓN A REALIZAR\tNOTAS\tESTADO\n";
-    const copia = [...asuntos];
-    copia.sort((a,b) => {
-        const map = {"Crítica":1,"Alta":2,"Media":3,"Concluida":4};
-        const pa = map[calcularPrioridad(a)], pb = map[calcularPrioridad(b)];
-        if (pa !== pb) return pa - pb;
-        return (a.fechaLimite || "9999").localeCompare(b.fechaLimite || "9999");
-    });
-    copia.forEach(x => {
-        csv += [calcularPrioridad(x), x.oficio, formatearFecha(x.fechaOficio), x.asunto, formatearFecha(x.fechaLimite), textoTiempo(x), x.accion, x.notas||"", x.estado].map(limpiarCSV).join("\t") + "\n";
-    });
-    descargarBlob(new Blob(["\ufeff" + csv], {type:"application/vnd.ms-excel;charset=utf-8;"}), "Agenda_Asuntos_2026_2027.xls");
 }
 function descargarWord() {
     const tabla = document.getElementById("tablaAgenda").outerHTML;
@@ -1113,7 +1258,144 @@ function guardarCircularPDF(){
     if (!oficio || !asunto) { alert("La extracción debe contener al menos Oficio/Circular y Asunto."); return; }
     asuntos.push({ id: Date.now(), creado: Date.now(), oficio, fechaOficio, fechaLimite, asunto, accion, estado, liga, notas });
     guardarLocal(); cerrarImportadorPDF(); renderizar();
-    alert("Circular agregada correctamente a la AgendaGPT Mobile.");
+    mostrarToast("Circular agregada a la agenda", oficio, "info");
+}
+
+/* =========================================================================
+   RESPALDO JSON
+========================================================================= */
+let respaldoImportTemporal = [];
+
+function limpiarValorEstado(v) {
+    const s = sinAcentosPDF(String(v||"")).toLowerCase();
+    if (/conclu/.test(s)) return "Concluido";
+    if (/proces/.test(s)) return "En proceso";
+    if (/pendien/.test(s)) return "Pendiente";
+    return "Pendiente";
+}
+
+function abrirRespaldo() {
+    const modal = document.getElementById("modalRespaldo");
+    modal.classList.add("visible");
+    modal.setAttribute("aria-hidden", "false");
+    document.getElementById("archivoRespaldo").value = "";
+    document.getElementById("respaldoStatus").textContent = "";
+    document.getElementById("respaldoBotones").style.display = "none";
+    document.getElementById("respaldoCount").textContent = asuntos.length;
+    respaldoImportTemporal = [];
+}
+
+function cerrarRespaldo() {
+    const modal = document.getElementById("modalRespaldo");
+    modal.classList.remove("visible");
+    modal.setAttribute("aria-hidden", "true");
+    document.getElementById("archivoRespaldo").value = "";
+    document.getElementById("respaldoStatus").textContent = "";
+    document.getElementById("respaldoBotones").style.display = "none";
+    respaldoImportTemporal = [];
+}
+
+function descargarRespaldo() {
+    const respaldo = {
+        app: "AgendaGPT Mobile",
+        version: 6,
+        fecha: new Date().toISOString(),
+        total: asuntos.length,
+        asuntos: asuntos
+    };
+    const json = JSON.stringify(respaldo, null, 2);
+    const fecha = new Date().toISOString().slice(0, 10);
+    descargarBlob(
+        new Blob([json], { type: "application/json;charset=utf-8;" }),
+        `AgendaGPT_Respaldo_${fecha}.json`
+    );
+    mostrarToast("Respaldo descargado", `${asuntos.length} asuntos guardados`, "info");
+}
+
+async function procesarRespaldo(file) {
+    if (!file) return;
+    const status = document.getElementById("respaldoStatus");
+    status.textContent = "Leyendo respaldo…";
+    document.getElementById("respaldoBotones").style.display = "none";
+    respaldoImportTemporal = [];
+
+    try {
+        const texto = await file.text();
+        let data;
+        try { data = JSON.parse(texto); }
+        catch(_) { throw new Error("El archivo no es un respaldo válido (JSON malformado)."); }
+
+        let lista = null;
+        if (Array.isArray(data)) lista = data;
+        else if (data && Array.isArray(data.asuntos)) lista = data.asuntos;
+        if (!lista || lista.length === 0) throw new Error("El respaldo no contiene asuntos.");
+
+        const limpios = [];
+        lista.forEach(r => {
+            if (!r || typeof r !== "object") return;
+            const oficio = String(r.oficio||"").trim();
+            const asunto = String(r.asunto||"").trim();
+            if (!oficio && !asunto) return;
+            limpios.push({
+                oficio: oficio || "S/N",
+                fechaOficio: String(r.fechaOficio||""),
+                fechaLimite: String(r.fechaLimite||""),
+                asunto,
+                accion: String(r.accion||""),
+                liga:   String(r.liga||""),
+                notas:  String(r.notas||""),
+                estado: limpiarValorEstado(r.estado)
+            });
+        });
+
+        if (limpios.length === 0) throw new Error("El respaldo no contiene asuntos válidos.");
+
+        respaldoImportTemporal = limpios;
+        status.textContent = `✓ Respaldo válido con ${limpios.length} asunto(s)${data.fecha ? " · generado el " + new Date(data.fecha).toLocaleString("es-MX") : ""}.`;
+        document.getElementById("respaldoBotones").style.display = "block";
+    } catch (error) {
+        console.error(error);
+        status.textContent = "⚠️ " + (error.message || "No se pudo leer el respaldo.");
+    }
+}
+
+function confirmarRestaurar(modo) {
+    if (!respaldoImportTemporal.length) return;
+    if (modo === "reemplazar") {
+        mostrarModal(
+            `Se eliminarán TODOS los asuntos actuales y se restaurarán ${respaldoImportTemporal.length} desde el respaldo. ¿Continuar?`,
+            () => aplicarRestaurar("reemplazar")
+        );
+    } else {
+        mostrarModal(
+            `Se agregarán ${respaldoImportTemporal.length} asuntos del respaldo, omitiendo duplicados exactos. ¿Continuar?`,
+            () => aplicarRestaurar("fusionar")
+        );
+    }
+}
+
+function aplicarRestaurar(modo) {
+    const base = modo === "reemplazar" ? [] : [...asuntos];
+    const clavesExistentes = new Set(base.map(a =>
+        (a.oficio||"").toLowerCase().trim() + "||" + (a.asunto||"").toLowerCase().trim()
+    ));
+
+    let agregados = 0, duplicados = 0;
+    const ahora = Date.now();
+    respaldoImportTemporal.forEach((r, i) => {
+        const clave = (r.oficio||"").toLowerCase().trim() + "||" + (r.asunto||"").toLowerCase().trim();
+        if (clavesExistentes.has(clave)) { duplicados++; return; }
+        clavesExistentes.add(clave);
+        base.push({ id: ahora + i, creado: ahora + i, ...r });
+        agregados++;
+    });
+
+    asuntos = base;
+    guardarLocal();
+    renderizar();
+    cerrarRespaldo();
+    cerrarModal();
+    mostrarToast("Respaldo restaurado", `Agregados: ${agregados}${duplicados ? " · Omitidos: " + duplicados : ""}`, "info");
 }
 
 /* ===================== PWA ===================== */
