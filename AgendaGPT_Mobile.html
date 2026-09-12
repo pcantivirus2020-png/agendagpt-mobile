@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
+<html lang="es"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#1F4E79">
@@ -137,203 +136,54 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
 @media (min-width:721px) { body{padding:20px;} .contenedor{margin-top:10px;} }
 @media print { body{padding:0;background:#fff;} .contenedor{box-shadow:none;max-width:none;} .botones,.filtros,.formulario,.acciones,.modal{display:none!important;} #tablaAgenda thead{display:table-header-group;} #tablaAgenda,#tablaAgenda tbody,#tablaAgenda tr,#tablaAgenda td,#tablaAgenda th{display:table;} }
 
-/* =========================================================
-   TOAST — aviso flotante de cambio de estado
-   ========================================================= */
-.toast-container {
-    position: fixed;
-    left: 50%;
-    bottom: 24px;
-    transform: translateX(-50%);
-    z-index: 2000;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: center;
-    pointer-events: none;
-    padding: 0 12px;
-    max-width: 100vw;
-}
-.toast {
-    pointer-events: auto;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: #1e293b;
-    color: #fff;
-    padding: 12px 18px;
-    border-radius: 12px;
-    font-size: 13px;
-    font-weight: 600;
-    box-shadow: 0 10px 30px rgba(0,0,0,.35);
-    transform: translateY(20px);
-    opacity: 0;
-    transition: transform .28s ease, opacity .28s ease;
-    max-width: 92vw;
-    text-align: left;
-    line-height: 1.35;
-}
-.toast.visible {
-    transform: translateY(0);
-    opacity: 1;
-}
-.toast .toast-icon {
-    font-size: 18px;
-    flex-shrink: 0;
-}
-.toast .toast-text { flex: 1; min-width: 0; }
-.toast .toast-title {
-    display: block;
-    font-weight: 800;
-    font-size: 13px;
-    margin-bottom: 2px;
-}
-.toast .toast-sub {
-    display: block;
-    font-size: 11px;
-    font-weight: 500;
-    color: #cbd5e1;
-    margin-top: 2px;
-    word-break: break-word;
-}
-.toast.toast-pendiente { background: #a1000e; }
-.toast.toast-proceso   { background: #8a5a00; }
-.toast.toast-concluido { background: #1f6b34; }
-.toast.toast-info      { background: #1F4E79; }
+.toast-container { position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:2000; display:flex; flex-direction:column; gap:8px; align-items:center; pointer-events:none; padding:0 12px; max-width:100vw; }
+.toast { pointer-events:auto; display:flex; align-items:center; gap:10px; background:#1e293b; color:#fff; padding:12px 18px; border-radius:12px; font-size:13px; font-weight:600; box-shadow:0 10px 30px rgba(0,0,0,.35); transform:translateY(20px); opacity:0; transition:transform .28s ease, opacity .28s ease; max-width:92vw; text-align:left; line-height:1.35; }
+.toast.visible { transform:translateY(0); opacity:1; }
+.toast .toast-icon { font-size:18px; flex-shrink:0; }
+.toast .toast-text { flex:1; min-width:0; }
+.toast .toast-title { display:block; font-weight:800; font-size:13px; margin-bottom:2px; }
+.toast .toast-sub { display:block; font-size:11px; font-weight:500; color:#cbd5e1; margin-top:2px; word-break:break-word; }
+.toast.toast-pendiente { background:#a1000e; }
+.toast.toast-proceso   { background:#8a5a00; }
+.toast.toast-concluido { background:#1f6b34; }
+.toast.toast-info      { background:#1F4E79; }
 
-/* =========================================================
-   AJUSTE PARA PC / LAPTOP — se activa solo en pantallas
-   anchas (≥ 900 px). No afecta al celular ni a tablets.
-   ========================================================= */
 @media (min-width: 900px) {
-
     body { padding: 22px; }
-    .contenedor {
-        max-width: 1500px;
-        margin: 12px auto;
-        padding: 22px 26px;
-        border-radius: 16px;
-    }
-
+    .contenedor { max-width: 1500px; margin: 12px auto; padding: 22px 26px; border-radius: 16px; }
     .encabezado { margin-bottom: 18px; }
     .encabezado h1 { font-size: 26px; }
     .encabezado p { font-size: 13px; }
-
-    .dashboard {
-        grid-template-columns: repeat(5, 1fr);
-        gap: 12px;
-        margin-bottom: 22px;
-    }
+    .dashboard { grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 22px; }
     .dashboard .tarjeta:first-child { grid-column: auto; }
     .tarjeta { padding: 14px 10px; border-radius: 12px; }
     .tarjeta .numero { font-size: 26px; }
     .tarjeta .texto { font-size: 11px; }
-
-    .botones {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 8px;
-        margin-bottom: 18px;
-    }
-    .botones button {
-        min-height: auto;
-        font-size: 13px;
-        padding: 10px 16px;
-    }
+    .botones { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 18px; }
+    .botones button { min-height: auto; font-size: 13px; padding: 10px 16px; }
     .botones button:first-child { grid-column: auto; }
-
-    .form-grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 12px;
-    }
+    .form-grid { grid-template-columns: repeat(4, 1fr); gap: 12px; }
     .campo-completo { grid-column: 1 / -1; }
-    .campo input,
-    .campo select,
-    .campo textarea,
-    .filtros input,
-    .filtros select {
-        font-size: 13px;
-        min-height: auto;
-    }
+    .campo input, .campo select, .campo textarea, .filtros input, .filtros select { font-size: 13px; min-height: auto; }
     .campo textarea { min-height: 80px; }
-    .form-botones {
-        display: flex;
-        grid-template-columns: none;
-        gap: 8px;
-    }
+    .form-botones { display: flex; grid-template-columns: none; gap: 8px; }
     .form-botones button { min-height: auto; }
-
-    .filtros {
-        grid-template-columns: 2fr 1fr 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 16px;
-    }
-
+    .filtros { grid-template-columns: 2fr 1fr 1fr 1fr; gap: 10px; margin-bottom: 16px; }
     .tabla-contenedor { overflow-x: auto; }
-    #tablaAgenda {
-        display: table;
-        min-width: 1300px;
-        width: 100%;
-    }
+    #tablaAgenda { display: table; min-width: 1300px; width: 100%; }
     #tablaAgenda thead { display: table-header-group; }
     #cuerpoTabla { display: table-row-group; }
-
-    #cuerpoTabla tr {
-        display: table-row;
-        background: transparent;
-        border: none;
-        border-radius: 0;
-        box-shadow: none;
-        position: static;
-    }
-
-    #cuerpoTabla tr td {
-        display: table-cell;
-        padding: 9px;
-        font-size: 12px;
-        line-height: 1.45;
-        vertical-align: top;
-        border-bottom: 1px solid #e5e9f0;
-        border-right: 1px solid #eef1f6;
-    }
+    #cuerpoTabla tr { display: table-row; background: transparent; border: none; border-radius: 0; box-shadow: none; position: static; }
+    #cuerpoTabla tr td { display: table-cell; padding: 9px; font-size: 12px; line-height: 1.45; vertical-align: top; border-bottom: 1px solid #e5e9f0; border-right: 1px solid #eef1f6; }
     #cuerpoTabla tr td:first-child { padding: 9px; }
-    #cuerpoTabla tr td:nth-child(2) {
-        font-size: 12px;
-        font-weight: 700;
-        color: #1F4E79;
-        padding: 9px;
-    }
-    #cuerpoTabla tr td:nth-child(3),
-    #cuerpoTabla tr td:nth-child(5),
-    #cuerpoTabla tr td:nth-child(6) { background: transparent; }
-    #cuerpoTabla tr td:nth-child(4),
-    #cuerpoTabla tr td:nth-child(7),
-    #cuerpoTabla tr td:nth-child(9) {
-        grid-column: auto;
-        padding: 9px;
-    }
-
-    #cuerpoTabla tr td:nth-child(3)::before,
-    #cuerpoTabla tr td:nth-child(4)::before,
-    #cuerpoTabla tr td:nth-child(5)::before,
-    #cuerpoTabla tr td:nth-child(6)::before,
-    #cuerpoTabla tr td:nth-child(7)::before { content: none; }
-
-    .acciones {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 5px;
-    }
-    .acciones button {
-        min-height: auto;
-        padding: 5px 8px;
-        font-size: 11px;
-    }
-
+    #cuerpoTabla tr td:nth-child(2) { font-size: 12px; font-weight: 700; color: #1F4E79; padding: 9px; }
+    #cuerpoTabla tr td:nth-child(3), #cuerpoTabla tr td:nth-child(5), #cuerpoTabla tr td:nth-child(6) { background: transparent; }
+    #cuerpoTabla tr td:nth-child(4), #cuerpoTabla tr td:nth-child(7), #cuerpoTabla tr td:nth-child(9) { grid-column: auto; padding: 9px; }
+    #cuerpoTabla tr td:nth-child(3)::before, #cuerpoTabla tr td:nth-child(4)::before, #cuerpoTabla tr td:nth-child(5)::before, #cuerpoTabla tr td:nth-child(6)::before, #cuerpoTabla tr td:nth-child(7)::before { content: none; }
+    .acciones { display: flex; flex-wrap: wrap; gap: 5px; }
+    .acciones button { min-height: auto; padding: 5px 8px; font-size: 11px; }
     .modal-contenido { max-width: 720px; }
     .pdf-preview { max-height: 220px; font-size: 12px; }
-
     .toast-container { bottom: 28px; }
     .toast { font-size: 13px; padding: 12px 20px; }
 }
@@ -358,7 +208,9 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
     <div class="botones">
         <button class="btn-principal" onclick="mostrarFormulario()">➕ Nuevo asunto</button>
         <button class="btn-principal" onclick="abrirImportadorPDF()">📄 Agregar circular PDF</button>
+        <button class="btn-verde" onclick="abrirImportadorExcel()">📥 Importar Excel</button>
         <button class="btn-principal" onclick="abrirRespaldo()">💾 Respaldo</button>
+        <button class="btn-naranja" onclick="descargarHTMLActualizado()">⬇️ HTML para GitHub</button>
         <button class="btn-principal" onclick="descargarWord()">📄 Descargar Word</button>
         <button class="btn-secundario" onclick="window.print()">🖨️ Imprimir / PDF</button>
         <button class="btn-rojo" onclick="confirmarBorradoTotal()">🗑️ Borrar todos</button>
@@ -492,9 +344,44 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
     </div>
 </div>
 
-<!-- =========================================================
-     MODAL RESPALDO COMPLETO (JSON)
-========================================================= -->
+<!-- MODAL IMPORTAR EXCEL -->
+<div class="modal" id="modalExcel" aria-hidden="true">
+    <div class="modal-contenido">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+            <div>
+                <span class="badge-ia">📥 IMPORTAR DESDE EXCEL / CSV</span>
+                <h2 style="margin:8px 0 0;color:#1F4E79;">Importar asuntos</h2>
+            </div>
+            <button class="btn-secundario" onclick="cerrarImportadorExcel()" aria-label="Cerrar">✕</button>
+        </div>
+        <p style="font-size:12px;color:#64748b;margin:8px 0 12px;">
+            Cargue un archivo <strong>.xls</strong>, <strong>.xlsx</strong> o <strong>.csv</strong>. Se detectan automáticamente las columnas:
+            <em>PRIORIDAD · OFICIO / CIRCULAR · FECHA DEL OFICIO · ASUNTO / ACTIVIDAD · FECHA LÍMITE · TIEMPO · ACCIÓN A REALIZAR · ESTADO · ACCIONES</em>.
+            Las columnas <strong>PRIORIDAD, TIEMPO y ACCIONES</strong> se ignoran porque la app las calcula o las genera solas.
+        </p>
+        <div class="pdf-zone">
+            <input id="archivoExcel" type="file" accept=".xls,.xlsx,.csv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv" onchange="procesarExcel(this.files[0])">
+            <div id="excelStatus" class="pdf-status"></div>
+        </div>
+        <div id="excelAlertas"></div>
+        <div id="excelPreviewWrap" style="display: none;">
+            <div style="font-weight:800;color:#334155;font-size:12px;margin-top:8px;">
+                Vista previa (<span id="excelCount">1</span> registros)
+            </div>
+            <div id="excelPreview" class="pdf-preview"></div>
+        </div>
+        <div id="excelBotones" style="display: none; margin-top: 12px;">
+            <div style="font-size:12px;color:#475569;margin-bottom:8px;font-weight:700;">¿Cómo desea importar?</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+                <button class="btn-verde" onclick="confirmarImportExcel('fusionar')">✅ Fusionar</button>
+                <button class="btn-naranja" onclick="confirmarImportExcel('reemplazar')">🔄 Reemplazar todo</button>
+            </div>
+            <button class="btn-secundario" style="width:100%;" onclick="cerrarImportadorExcel()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL RESPALDO -->
 <div class="modal" id="modalRespaldo" aria-hidden="true">
     <div class="modal-contenido">
         <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
@@ -507,25 +394,21 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
         <p style="font-size:12px;color:#64748b;margin:8px 0 12px;">
             El respaldo .json conserva todos los campos de cada asunto (incluidas notas y ligas). Guárdelo en su correo o Google Drive y restáurelo cuando cambie de celular o navegador.
         </p>
-
         <div style="background:#f5f8fc;border:1px solid #dce5ef;border-radius:12px;padding:14px;margin-bottom:12px;">
             <div style="font-weight:800;color:#1F4E79;margin-bottom:6px;">📤 Crear respaldo</div>
             <div style="font-size:12px;color:#64748b;margin-bottom:10px;">
-                Se descargará un archivo <strong>AgendaGPT_Respaldo_FECHA.json</strong> con los <span id="respaldoCount">0</span> asuntos actuales.
+                Se descargará un archivo <strong>AgendaGPT_Respaldo_FECHA.json</strong> con los <span id="respaldoCount">21</span> asuntos actuales.
             </div>
             <button class="btn-principal" onclick="descargarRespaldo()">💾 Descargar respaldo</button>
         </div>
-
         <div style="background:#f5f8fc;border:1px solid #dce5ef;border-radius:12px;padding:14px;">
             <div style="font-weight:800;color:#1F4E79;margin-bottom:6px;">📂 Restaurar respaldo</div>
             <div style="font-size:12px;color:#64748b;margin-bottom:10px;">
                 Cargue un archivo .json generado por esta app.
             </div>
-            <input id="archivoRespaldo" type="file" accept=".json,application/json"
-                   style="width:100%;font-size:14px;"
-                   onchange="procesarRespaldo(this.files[0])">
+            <input id="archivoRespaldo" type="file" accept=".json,application/json" style="width:100%;font-size:14px;" onchange="procesarRespaldo(this.files[0])">
             <div id="respaldoStatus" class="pdf-status" style="margin-top:8px;"></div>
-            <div id="respaldoBotones" style="display:none;margin-top:10px;">
+            <div id="respaldoBotones" style="display: none; margin-top: 10px;">
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
                     <button class="btn-verde" onclick="confirmarRestaurar('fusionar')">✅ Fusionar</button>
                     <button class="btn-naranja" onclick="confirmarRestaurar('reemplazar')">🔄 Reemplazar todo</button>
@@ -539,7 +422,7 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
 <div class="modal" id="modal">
     <div class="modal-contenido">
         <h2>⚠️ Confirmación</h2>
-        <p id="mensajeModal"></p>
+        <p id="mensajeModal">¿Está seguro de eliminar TODOS los asuntos registrados? Esta acción no se puede deshacer.</p>
         <div class="form-botones">
             <button class="btn-rojo" id="confirmarModal">Confirmar</button>
             <button class="btn-secundario" onclick="cerrarModal()">Cancelar</button>
@@ -547,7 +430,7 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
     </div>
 </div>
 
-<!-- CONTENEDOR DE TOASTS -->
+<!-- TOASTS -->
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
@@ -555,23 +438,9 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
 const STORAGE_KEY = "AGENDA_ASUNTOS_2026_2027";
 
 /* ===================== DATOS INICIALES ===================== */
+/* AGENDAGPT_DATOS_MARKER */
 const datosIniciales = [
-{oficio:"SE/DEP/DT/287/2026",fechaOficio:"2026-09-08",asunto:"Solicitud de docentes de Inglés de nivel primaria para certificación internacional",fechaLimite:"2026-09-11",accion:"Difundir convocatoria; seleccionar docentes participantes y remitir relación al correo tecnicoprimaria@correo.setab.gob.mx usando archivo anexo.",estado:"Pendiente",liga:"",notas:""},
-{oficio:"Circular SE/DEP/DATP/271/2026",fechaOficio:"2026-09-01",asunto:'Jornada "Te escucho, te comprendo, te protejo"',fechaLimite:"2026-09-14",accion:"Dar seguimiento a la Segunda Jornada de Concientización; promover actividades formativas/informativas; remitir por sector información concentrada en Excel y ficha técnica al correo tecnicoprimaria@correo.setab.gob.mx.",estado:"Pendiente",liga:"Evento 07 de septiembre de 2026",notas:""},
-{oficio:"SE/CGPEI/DCEI/3420/2026",fechaOficio:"2026-08-26",asunto:'Instrucciones de trabajo "Procesos de inicio de ciclo escolar 2026-2027 (inscripción y reinscripción)"',fechaLimite:"2026-09-14",accion:"Compartir instrucciones; verificar/actualizar datos de escuela, grupos, turnos, alumnos y personal; concluir registro de maestros; realizar inscripción y reinscripción; atender altas, bajas, cambios y remitir documentación PDF.",estado:"Pendiente",liga:"",notas:""},
-{oficio:"SE/DEP/DATP/275/2026",fechaOficio:"2026-09-02",asunto:"Medidas preventivas y filtro escolar contra el sarampión",fechaLimite:"2026-09-18",accion:"Difundir recomendaciones; fortalecer vigilancia epidemiológica; ante síntomas evitar permanencia, informar a tutor, recomendar valoración y notificar a jurisdicción sanitaria; promover vacunación; remitir acciones en formato anexo al correo tecnicoprimaria@correo.setab.gob.mx.",estado:"Pendiente",liga:"",notas:""},
-{oficio:"SE/DEP/DATP/274/2026",fechaOficio:"2026-09-02",asunto:"Recomendaciones contra dengue, Zika y Chikunguña",fechaLimite:"2026-09-18",accion:'Difundir medidas preventivas; mantener planteles libres de criaderos; jornadas de limpieza/descacharrización; tapar depósitos; usar repelente/ropa protectora; estrategia "Lava, Tapa, Voltea y Tira"; reportar sitios de riesgo; remitir acciones al correo tecnicoprimaria@correo.setab.gob.mx.',estado:"Pendiente",liga:"",notas:""},
-{oficio:"SE/DEP/DATP/290/2026",fechaOficio:"2026-09-08",asunto:'Difusión de prórroga de inscripción al taller "Metodologías de proyectos sociocríticos en el marco de la NEM"',fechaLimite:"2026-09-18",accion:"Difundir prórroga entre supervisores, directores y personal técnico-pedagógico, especialmente contextos vulnerables, multigrado, rurales, indígenas y educación especial; registro en la plataforma WebCoreX.",estado:"Pendiente",liga:"Curso: 21 de septiembre al 30 de octubre de 2026",notas:""},
-{oficio:"SE/DEP/DCP/326/2026",fechaOficio:"2026-09-08",asunto:"Plantillas de personal, 3er. Trim. 2026 (jul-sep)",fechaLimite:"2026-09-30",accion:'Difundir indicaciones; verificar actualización de datos personales/académicos y documentos en WebcoreX; directores/supervisores/jefes revisar y actualizar "OBSERVACIÓN"; generar plantilla PDF y entregar impresa y digital.',estado:"Pendiente",liga:"Sector 23: entrega a Vhsa el 15 de octubre, 9:00 h",notas:""},
-{oficio:"SE/DEP/DATP/6920/2026",fechaOficio:"2026-09-07",asunto:"Invitación a la Ceremonia de Distinción a Escuelas Promotoras de la Salud y reconocimiento a la Estrategia Nacional Vive Saludable, Vive Feliz",fechaLimite:"2026-09-29",accion:"Difundir invitación; promover asistencia de autoridades, supervisores y representantes de las escuelas convocadas; respetar distribución de lugares; asistir con hoja de papel reciclada. Escuelas Zona Escolar 66: 27DPR0529D María Dolores Pérez Oropeza; 27DPR0540Z Virginia Santamaria; 27DPR0983U Ing. Leandro Rovirosa W.; 27DPR0985S Francisco J. Santamaría; 27DPR0986R Manuel A. Jiménez.",estado:"Pendiente",liga:"Teatro del Estado Esperanza Iris — 29/09/2026 — 09:00 h — puertas 08:00 h",notas:""},
-{oficio:"SE/DEP/DATP/278/2026",fechaOficio:"2026-09-03",asunto:'Convocatoria "Jornadas Nacionales de Juegos Tradicionales"',fechaLimite:"2026-09-18",accion:"Dar amplia difusión entre comunidades educativas; compartir enlaces de convocatoria y registro; seguimiento a cargo del Enlace Estatal L.E.F. Sergio de la Rosa Alejandro.",estado:"Pendiente",liga:"https://forms.gle/jZbjwZApRPAuT9Vv6",notas:""},
-{oficio:"SE/DEP/DCP/5884/2026",fechaOficio:"2026-08-27",asunto:"Remisión de órdenes de comisión de directores de escuelas multigrado y actualización en Webcore",fechaLimite:"",accion:"Remitir en PDF al correo procesos.dep@correo.setab.gob.mx las órdenes de comisión vigentes de directores multigrado y docentes con función directiva; refrendar/actualizar órdenes al inicio del ciclo y actualizar adscripción en Webcore.",estado:"Pendiente",liga:"A la brevedad posible",notas:""},
-{oficio:"Circular DEP/DCP/318/2026",fechaOficio:"2026-08-31",asunto:'Instrucciones de trabajo "Procesos de inicio de ciclo escolar 2026-2027 (inscripción y reinscripción)"',fechaLimite:"2026-09-30",accion:"Dar a conocer y difundir al personal directivo el documento íntegro de Control Escolar; atender plazos, procedimientos, criterios e indicaciones; evitar omisiones.",estado:"Pendiente",liga:"",notas:""},
-{oficio:"Circular SE/DEP/DATP/277/2026",fechaOficio:"2026-09-02",asunto:"Calendarización de Reuniones de Trabajo con supervisores y ATP's",fechaLimite:"2026-09-15",accion:"Difundir y cumplir calendarización; registrar fechas en agendas; en CTE de zona, supervisor/ATP presenta informe de acciones, logros, avances, áreas de oportunidad y compromisos.",estado:"Pendiente",liga:"15/09/2026, 13/10/2026, 08/11/2026, 08/12/2026, 19/01/2027, 09/02/2027, 09/03/2027, 13/04/2027, 11/05/2027 y 08/06/2027",notas:""},
-{oficio:"Circular DEP/DCP/323/2026",fechaOficio:"2026-09-04",asunto:"Instrucciones para aumento de matrícula en grupo, usar el formato enviado del departamento.",fechaLimite:"",accion:"Difundir información; para solicitar aumento, requisitar formato anexo con justificación y firmas de Director, Docente responsable y Supervisor; remitir a Dirección de Educación Primaria o correos indicados.",estado:"Pendiente",liga:"",notas:""},
-{oficio:"SE/DEP/DATP/279/2026",fechaOficio:"2026-09-03",asunto:'Difusión del proyecto "Libros, Tinta y Murales"',fechaLimite:"",accion:"Difundir entre personal directivo y docente; orientar/acompañar creación de periódicos murales y rincones de lectura; remitir ficha técnica y evidencias fotográficas al correo tecnicoprimaria@correo.setab.gob.mx; promover análisis en CTE.",estado:"Pendiente",liga:"Envío mensual: día hábil de cada mes",notas:""},
-{oficio:"Circular SE/DEP/DATP/276/2026",fechaOficio:"2026-09-03",asunto:"Difusión de link para cuestionario digital sobre Libros de Texto Gratuito",fechaLimite:"",accion:"Difundir a todas las escuelas primarias el enlace electrónico para consultar información y atender necesidades de Libros de Texto Gratuito por incremento de matrícula 2026-2027.",estado:"Pendiente",liga:"https://docs.google.com/forms/d/e/1FAIpQLSf9vx2XN4w9ZmnSbVS_zMLmfvAzNlqmE_aLS_TJ-P-z-5nucw/viewform",notas:""},
-{oficio:"SE/SEB/DGEB/DEP/8811/2026",fechaOficio:"2026-09-04",asunto:"Capacitación a las Mesas Directivas de las Asociaciones de Padres de Familia",fechaLimite:"",accion:"Difundir y coordinar capacitación; garantizar entrega del Reglamento; requisitar Formato de Registro y Lista de Asistencia; resguardar en plantel; elaborar informe por zona en PDF y remitir por Sector a departamento.primaria@correo.setab.gob.mx.",estado:"Pendiente",liga:"No hay fecha específica para entregar el informe",notas:""}
+
 ];
 
 /* ===================== CARGA / PERSISTENCIA ===================== */
@@ -615,15 +484,8 @@ function escapar(t) { if (t===null||t===undefined) return ""; return String(t).r
 function mostrarToast(titulo, subtitulo, tipo) {
     const contenedor = document.getElementById("toastContainer");
     if (!contenedor) return;
-
-    const iconos = {
-        pendiente: "🔴",
-        proceso:   "🟡",
-        concluido: "🟢",
-        info:      "ℹ️"
-    };
+    const iconos = { pendiente:"🔴", proceso:"🟡", concluido:"🟢", info:"ℹ️" };
     const icono = iconos[tipo] || "ℹ️";
-
     const toast = document.createElement("div");
     toast.className = "toast toast-" + (tipo || "info");
     toast.innerHTML = `
@@ -634,12 +496,8 @@ function mostrarToast(titulo, subtitulo, tipo) {
         </span>
     `;
     contenedor.appendChild(toast);
-
-    // Forzar reflow para animación de entrada
     void toast.offsetHeight;
     toast.classList.add("visible");
-
-    // Salida después de 2.6 s
     setTimeout(() => {
         toast.classList.remove("visible");
         setTimeout(() => { try { toast.remove(); } catch(_) {} }, 320);
@@ -699,29 +557,17 @@ function editarAsunto(id) {
 function cambiarEstado(id) {
     const a = asuntos.find(x => x.id === id);
     if (!a) return;
-
     const estadoAnterior = a.estado;
     if (a.estado === "Pendiente") a.estado = "En proceso";
     else if (a.estado === "En proceso") a.estado = "Concluido";
     else a.estado = "Pendiente";
-
     guardarLocal();
     renderizar();
-
-    // Aviso toast según el nuevo estado
-    const oficioCorto = (a.oficio || "").length > 40
-        ? a.oficio.slice(0, 40) + "…"
-        : (a.oficio || "Asunto");
-
-    if (a.estado === "Pendiente") {
-        mostrarToast("Estado cambiado a Pendiente", `${oficioCorto} · antes: ${estadoAnterior}`, "pendiente");
-    } else if (a.estado === "En proceso") {
-        mostrarToast("Estado cambiado a En proceso", `${oficioCorto} · antes: ${estadoAnterior}`, "proceso");
-    } else {
-        mostrarToast("Estado cambiado a Concluido", `${oficioCorto} · antes: ${estadoAnterior}`, "concluido");
-    }
+    const oficioCorto = (a.oficio || "").length > 40 ? a.oficio.slice(0, 40) + "…" : (a.oficio || "Asunto");
+    if (a.estado === "Pendiente") mostrarToast("Estado cambiado a Pendiente", `${oficioCorto} · antes: ${estadoAnterior}`, "pendiente");
+    else if (a.estado === "En proceso") mostrarToast("Estado cambiado a En proceso", `${oficioCorto} · antes: ${estadoAnterior}`, "proceso");
+    else mostrarToast("Estado cambiado a Concluido", `${oficioCorto} · antes: ${estadoAnterior}`, "concluido");
 }
-
 function eliminarAsunto(id) {
     const a = asuntos.find(x => x.id === id);
     if (!a) return;
@@ -858,30 +704,290 @@ function descargarWord() {
     descargarBlob(new Blob(["\ufeff", html], {type:"application/msword"}), "Agenda_Asuntos_2026_2027.doc");
 }
 
+/* =========================================================================
+   DESCARGAR HTML ACTUALIZADO — versión robusta
+========================================================================= */
+function descargarHTMLActualizado() {
+    const modalesAbiertos = Array.from(document.querySelectorAll(".modal.visible"));
+    modalesAbiertos.forEach(m => m.classList.remove("visible"));
+    const formulario = document.getElementById("formulario");
+    const formularioAbierto = formulario && formulario.classList.contains("visible");
+    if (formulario) formulario.classList.remove("visible");
+
+    const contenedorToasts = document.getElementById("toastContainer");
+    const toastsBackup = contenedorToasts ? contenedorToasts.innerHTML : "";
+    if (contenedorToasts) contenedorToasts.innerHTML = "";
+
+    const cuerpoTabla = document.getElementById("cuerpoTabla");
+    const tablaBackup = cuerpoTabla ? cuerpoTabla.innerHTML : "";
+    if (cuerpoTabla) cuerpoTabla.innerHTML = "";
+
+    const nuevosDatos = asuntos.map(a => ({
+        oficio: a.oficio || "",
+        fechaOficio: a.fechaOficio || "",
+        asunto: a.asunto || "",
+        fechaLimite: a.fechaLimite || "",
+        accion: a.accion || "",
+        estado: a.estado || "Pendiente",
+        liga: a.liga || "",
+        notas: a.notas || ""
+    }));
+
+    const datosJS = '[\n' + nuevosDatos.map(d =>
+        '{oficio:' + JSON.stringify(d.oficio) +
+        ',fechaOficio:' + JSON.stringify(d.fechaOficio) +
+        ',asunto:' + JSON.stringify(d.asunto) +
+        ',fechaLimite:' + JSON.stringify(d.fechaLimite) +
+        ',accion:' + JSON.stringify(d.accion) +
+        ',estado:' + JSON.stringify(d.estado) +
+        ',liga:' + JSON.stringify(d.liga) +
+        ',notas:' + JSON.stringify(d.notas) + '}'
+    ).join(',\n') + '\n]';
+
+    let html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+
+    if (cuerpoTabla) cuerpoTabla.innerHTML = tablaBackup;
+    if (contenedorToasts) contenedorToasts.innerHTML = toastsBackup;
+    if (formulario && formularioAbierto) formulario.classList.add("visible");
+    modalesAbiertos.forEach(m => m.classList.add("visible"));
+
+    let huboReemplazo = false;
+
+    const idxInicio = html.indexOf("const datosIniciales = [");
+    if (idxInicio >= 0) {
+        const idxFin = html.indexOf("\n];", idxInicio);
+        if (idxFin > idxInicio) {
+            html = html.slice(0, idxInicio) +
+                   'const datosIniciales = ' + datosJS + ';' +
+                   html.slice(idxFin + 3);
+            huboReemplazo = true;
+        }
+    }
+
+    const fecha = new Date().toISOString().slice(0, 10);
+
+    if (huboReemplazo) {
+        descargarBlob(
+            new Blob([html], { type: "text/html;charset=utf-8" }),
+            `AgendaGPT_Mobile_${fecha}.html`
+        );
+        mostrarToast("HTML actualizado descargado", `${asuntos.length} asuntos incluidos · listo para GitHub`, "info");
+    } else {
+        const respaldo = {
+            app: "AgendaGPT Mobile",
+            version: 8,
+            fecha: new Date().toISOString(),
+            total: asuntos.length,
+            asuntos
+        };
+        descargarBlob(
+            new Blob([JSON.stringify(respaldo, null, 2)], { type: "application/json;charset=utf-8;" }),
+            `AgendaGPT_DatosEmergencia_${fecha}.json`
+        );
+        mostrarToast("No se pudo generar el HTML", "Se descargó un JSON de emergencia", "info");
+        alert(
+            "No se pudo reemplazar el array de datos automáticamente.\n\n" +
+            "Se descargó un archivo .json con tus asuntos como respaldo de emergencia.\n\n" +
+            "Puedes usar el botón 💾 Respaldo dentro de la app cuando lo necesites."
+        );
+    }
+}
+
+/* =========================================================================
+   IMPORTAR EXCEL / CSV
+========================================================================= */
+let sheetjsPromise = null;
+let excelImportTemporal = [];
+
+function cargarSheetJS() {
+    if (!sheetjsPromise) {
+        sheetjsPromise = import("https://cdn.jsdelivr.net/npm/xlsx@0.18.5/+esm")
+            .then(mod => mod.default || mod);
+    }
+    return sheetjsPromise;
+}
+function normalizarEncabezado(s) {
+    return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().trim().replace(/[^a-z0-9]+/g," ").trim();
+}
+function fechaDesdeCeldaExcel(valor) {
+    if (valor === null || valor === undefined) return "";
+    const s = String(valor).trim();
+    if (!s) return "";
+    let m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+    if (m) return `${m[3]}-${String(m[2]).padStart(2,"0")}-${String(m[1]).padStart(2,"0")}`;
+    m = s.match(/^(\d{1,2})-(\d{1,2})-(\d{4})$/);
+    if (m) return `${m[3]}-${String(m[2]).padStart(2,"0")}-${String(m[1]).padStart(2,"0")}`;
+    m = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+    if (m) return `${m[1]}-${String(m[2]).padStart(2,"0")}-${String(m[3]).padStart(2,"0")}`;
+    if (/^\d+(\.\d+)?$/.test(s)) {
+        const n = parseFloat(s);
+        if (n > 20000 && n < 80000) {
+            const d = new Date(Math.round((n - 25569) * 86400 * 1000));
+            return d.toISOString().slice(0,10);
+        }
+    }
+    const meses = { enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,julio:7,agosto:8,septiembre:9,setiembre:9,octubre:10,noviembre:11,diciembre:12 };
+    m = s.match(/(\d{1,2})\s+de\s+([a-záéíóú]+)\s+(?:de\s+)?(\d{4})/i);
+    if (m) {
+        const mes = meses[sinAcentosPDF(m[2]).toLowerCase()];
+        if (mes) return `${m[3]}-${String(mes).padStart(2,"0")}-${String(m[1]).padStart(2,"0")}`;
+    }
+    return "";
+}
+function limpiarValorEstado(v) {
+    const s = sinAcentosPDF(String(v||"")).toLowerCase();
+    if (/conclu/.test(s)) return "Concluido";
+    if (/proces/.test(s)) return "En proceso";
+    if (/pendien/.test(s)) return "Pendiente";
+    return "Pendiente";
+}
+function abrirImportadorExcel() {
+    const modal = document.getElementById("modalExcel");
+    modal.classList.add("visible");
+    modal.setAttribute("aria-hidden", "false");
+    document.getElementById("archivoExcel").value = "";
+    document.getElementById("excelStatus").textContent = "Seleccione el archivo Excel o CSV.";
+    document.getElementById("excelAlertas").innerHTML = "";
+    document.getElementById("excelPreviewWrap").style.display = "none";
+    document.getElementById("excelBotones").style.display = "none";
+    excelImportTemporal = [];
+}
+function cerrarImportadorExcel() {
+    const modal = document.getElementById("modalExcel");
+    modal.classList.remove("visible");
+    modal.setAttribute("aria-hidden", "true");
+    document.getElementById("archivoExcel").value = "";
+    document.getElementById("excelStatus").textContent = "";
+    document.getElementById("excelPreview").textContent = "";
+    document.getElementById("excelPreviewWrap").style.display = "none";
+    document.getElementById("excelBotones").style.display = "none";
+    document.getElementById("excelAlertas").innerHTML = "";
+    excelImportTemporal = [];
+}
+async function procesarExcel(file) {
+    if (!file) return;
+    const status = document.getElementById("excelStatus");
+    const alertas = document.getElementById("excelAlertas");
+    alertas.innerHTML = "";
+    status.textContent = "Leyendo archivo…";
+    try {
+        const XLSX = await cargarSheetJS();
+        const buffer = await file.arrayBuffer();
+        const workbook = XLSX.read(buffer, { type: "array", raw: false, cellDates: false });
+        const hoja = workbook.Sheets[workbook.SheetNames[0]];
+        if (!hoja) throw new Error("El archivo no contiene hojas legibles.");
+        const matriz = XLSX.utils.sheet_to_json(hoja, { header: 1, defval: "", raw: false });
+        if (!matriz || matriz.length < 2) throw new Error("El archivo está vacío o solo contiene encabezados.");
+        const claves = {
+            oficio:      ["oficio","circular","oficio circular"],
+            fechaOficio: ["fecha del oficio","fecha oficio"],
+            asunto:      ["asunto","actividad","asunto actividad"],
+            fechaLimite: ["fecha limite","fecha de entrega","plazo"],
+            accion:      ["accion a realizar","accion","accion realizar"],
+            notas:       ["notas"],
+            liga:        ["liga","enlace","informacion adicional"],
+            estado:      ["estado"]
+        };
+        let filaHeader = -1, mapa = null;
+        for (let i = 0; i < Math.min(matriz.length, 8); i++) {
+            const fila = matriz[i].map(normalizarEncabezado);
+            const m = {};
+            let coincidencias = 0;
+            fila.forEach((celda, idx) => {
+                for (const [campo, palabras] of Object.entries(claves)) {
+                    if (m[campo] !== undefined) continue;
+                    if (palabras.some(p => celda.includes(normalizarEncabezado(p)))) {
+                        m[campo] = idx;
+                        coincidencias++;
+                    }
+                }
+            });
+            if (coincidencias >= 3) { filaHeader = i; mapa = m; break; }
+        }
+        if (filaHeader === -1 || !mapa) throw new Error("No se reconoció la estructura del archivo. Asegúrese de que la primera fila contenga encabezados como OFICIO / CIRCULAR, ASUNTO / ACTIVIDAD, FECHA LÍMITE, ACCIÓN A REALIZAR, ESTADO.");
+        const registros = [];
+        for (let i = filaHeader + 1; i < matriz.length; i++) {
+            const fila = matriz[i];
+            if (!fila || fila.every(c => !String(c||"").trim())) continue;
+            const oficio = String(fila[mapa.oficio] || "").trim();
+            const asunto = String(fila[mapa.asunto] || "").trim();
+            if (!oficio && !asunto) continue;
+            registros.push({
+                oficio: oficio || "S/N",
+                fechaOficio: fechaDesdeCeldaExcel(fila[mapa.fechaOficio]),
+                asunto: asunto,
+                fechaLimite: fechaDesdeCeldaExcel(fila[mapa.fechaLimite]),
+                accion: String(fila[mapa.accion] || "").trim(),
+                liga:  mapa.liga   !== undefined ? String(fila[mapa.liga]   || "").trim() : "",
+                notas: mapa.notas  !== undefined ? String(fila[mapa.notas]  || "").trim() : "",
+                estado: limpiarValorEstado(fila[mapa.estado])
+            });
+        }
+        if (registros.length === 0) throw new Error("No se encontraron asuntos válidos en el archivo.");
+        excelImportTemporal = registros;
+        const prev = registros.slice(0, 5).map((r, i) =>
+            `${i+1}. [${r.oficio}] ${r.asunto.slice(0, 70)}${r.asunto.length > 70 ? "…" : ""}${r.fechaLimite ? " · " + formatearFecha(r.fechaLimite) : ""}`
+        ).join("\n");
+        document.getElementById("excelPreview").textContent = prev + (registros.length > 5 ? `\n… y ${registros.length - 5} más` : "");
+        document.getElementById("excelCount").textContent = registros.length;
+        document.getElementById("excelPreviewWrap").style.display = "block";
+        document.getElementById("excelBotones").style.display = "block";
+        status.textContent = `✓ ${registros.length} asunto(s) detectado(s) en el archivo.`;
+    } catch (error) {
+        console.error(error);
+        status.textContent = "⚠️ " + (error.message || "No se pudo procesar el archivo.");
+        alertas.innerHTML = `<div class="pdf-alerta">${escapar(error.message || "Error al procesar el archivo.")}</div>`;
+        document.getElementById("excelPreviewWrap").style.display = "none";
+        document.getElementById("excelBotones").style.display = "none";
+        excelImportTemporal = [];
+    }
+}
+function confirmarImportExcel(modo) {
+    if (!excelImportTemporal.length) return;
+    if (modo === "reemplazar") {
+        mostrarModal(`Se eliminarán TODOS los asuntos actuales y se importarán ${excelImportTemporal.length} desde el archivo. ¿Continuar?`, () => aplicarImportExcel("reemplazar"));
+    } else {
+        mostrarModal(`Se agregarán ${excelImportTemporal.length} asuntos al final, omitiendo duplicados exactos. ¿Continuar?`, () => aplicarImportExcel("fusionar"));
+    }
+}
+function aplicarImportExcel(modo) {
+    const base = modo === "reemplazar" ? [] : [...asuntos];
+    const clavesExistentes = new Set(base.map(a => (a.oficio||"").toLowerCase().trim() + "||" + (a.asunto||"").toLowerCase().trim()));
+    let agregados = 0, duplicados = 0;
+    const ahora = Date.now();
+    excelImportTemporal.forEach((r, i) => {
+        const clave = (r.oficio||"").toLowerCase().trim() + "||" + (r.asunto||"").toLowerCase().trim();
+        if (clavesExistentes.has(clave)) { duplicados++; return; }
+        clavesExistentes.add(clave);
+        base.push({ id: ahora + i, creado: ahora + i, ...r });
+        agregados++;
+    });
+    asuntos = base;
+    guardarLocal();
+    renderizar();
+    cerrarImportadorExcel();
+    cerrarModal();
+    mostrarToast("Importación completa", `Agregados: ${agregados}${duplicados ? " · Omitidos: " + duplicados : ""}`, "info");
+}
+
 /* ===================== PDF + OCR ===================== */
 let pdfTextoTemporal = "";
 let pdfModulePromise = null;
 let tesseractPromise = null;
-
 function cargarPDFJS() {
     if (!pdfModulePromise) {
         pdfModulePromise = import("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs")
             .then(mod => {
-                if (mod && mod.GlobalWorkerOptions) {
-                    mod.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
-                }
+                if (mod && mod.GlobalWorkerOptions) mod.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
                 return mod;
             });
     }
     return pdfModulePromise;
 }
 function cargarTesseract() {
-    if (!tesseractPromise) {
-        tesseractPromise = import("https://cdn.jsdelivr.net/npm/tesseract.js@5.1.0/dist/tesseract.esm.min.js");
-    }
+    if (!tesseractPromise) tesseractPromise = import("https://cdn.jsdelivr.net/npm/tesseract.js@5.1.0/dist/tesseract.esm.min.js");
     return tesseractPromise;
 }
-
 function abrirImportadorPDF() {
     const modal = document.getElementById("modalPDF");
     modal.classList.add("visible");
@@ -906,7 +1012,6 @@ function cerrarImportadorPDF() {
     document.getElementById("pdfAlertas").innerHTML = "";
     pdfTextoTemporal = "";
 }
-
 const MESES_PDF = { enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,julio:7,agosto:8,septiembre:9,setiembre:9,octubre:10,noviembre:11,diciembre:12 };
 function sinAcentosPDF(v){ return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
 function normalizarLineaPDF(linea){
@@ -967,7 +1072,6 @@ function limpiarTextoReconocidoPDF(texto){
 }
 function lineasPDF(texto){ return String(texto||"").split("\n").map(normalizarLineaPDF).filter(x => !lineaBasuraPDF(x)); }
 function limpiarFrasePDF(v){ return String(v||"").replace(/\s+/g," ").replace(/^[-:;,.\s]+|[-:;,.\s]+$/g,"").trim(); }
-
 function fechaISODesdeTextoPDF(texto){
     const t = String(texto||"");
     let m = t.match(/\b(\d{1,2})[\/-](\d{1,2})[\/-](20\d{2})\b/);
@@ -980,7 +1084,6 @@ function fechaISODesdeTextoPDF(texto){
     }
     return "";
 }
-
 function extraerOficioPDF(texto){
     const limpio = String(texto||"").replace(/\s+/g," ");
     const patrones = [
@@ -993,7 +1096,6 @@ function extraerOficioPDF(texto){
     if (/\b(?:sin\s+n[uú]mero|s\/n)\b/i.test(limpio) && /\b(?:oficio|circular)\b/i.test(limpio)) return "S/N (sin número)";
     return "";
 }
-
 function extraerFechaOficioPDF(texto){
     const ls = lineasPDF(texto);
     for (let i = 0; i < ls.length; i++) {
@@ -1013,7 +1115,6 @@ function extraerFechaOficioPDF(texto){
     const ventana = idx >= 0 ? ls.slice(Math.max(0, idx - 3), Math.min(ls.length, idx + 15)).join(" ") : texto;
     return fechaISODesdeTextoPDF(ventana);
 }
-
 function extraerFechaLimitePDF(texto){
     const t = String(texto||"").replace(/\n/g," ");
     const patrones = [
@@ -1028,7 +1129,6 @@ function extraerFechaLimitePDF(texto){
     if (periodo) { const f = fechaISODesdeTextoPDF(periodo[1]); if (f) return f; }
     return "";
 }
-
 function extraerAsuntoPDF(texto){
     const ls = lineasPDF(texto);
     for (let i = 0; i < ls.length; i++) {
@@ -1052,7 +1152,6 @@ function extraerAsuntoPDF(texto){
     }
     return "";
 }
-
 function extraerAccionPDF(texto){
     const ls = lineasPDF(texto);
     const claves = /^(?:se\s+solicita(?:\s+atentamente)?|se\s+instruye(?:\s+a)?|deber[aá]n?|debe(?:r)?|favor\s+de|se\s+requiere|remitir|enviar|realizar|dar\s+seguimiento|difundir|atender|registrar|informar|participar|acudir|capturar|actualizar|verificar|entregar|reportar|llenar|contestar|cumplir|notificar|hacer\s+llegar|presentar)\b/i;
@@ -1075,9 +1174,7 @@ function extraerAccionPDF(texto){
     }
     return [...new Set(candidatas)].slice(0,3).join(" ");
 }
-
 function construirTextoLimpioPDF(paginas){ return limpiarTextoReconocidoPDF(paginas.join("\n")); }
-
 async function extraerTextoPaginaPDF(page){
     const content = await page.getTextContent();
     const items = content.items || [];
@@ -1095,7 +1192,6 @@ async function extraerTextoPaginaPDF(page){
         f.items.sort((a,b) => (a.transform?.[4]||0) - (b.transform?.[4]||0)).map(x => x.str||"").join(" ")
     ).join("\n");
 }
-
 async function ocrPaginaPDF(page, onProgress){
     const viewport = page.getViewport({ scale: 2.0 });
     const canvas = document.createElement("canvas");
@@ -1105,11 +1201,9 @@ async function ocrPaginaPDF(page, onProgress){
     ctx.fillStyle = "#ffffff";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     await page.render({ canvasContext: ctx, viewport }).promise;
-
     const tesseract = await cargarTesseract();
     const createWorker = tesseract.createWorker || (tesseract.default && tesseract.default.createWorker);
     if (!createWorker) throw new Error("No se pudo inicializar el motor OCR.");
-
     const worker = await createWorker("spa", 1, {
         logger: (m) => {
             if (onProgress && m && m.status === "recognizing text") {
@@ -1124,7 +1218,6 @@ async function ocrPaginaPDF(page, onProgress){
         try { await worker.terminate(); } catch(_) {}
     }
 }
-
 function calcularConfianzaExtraccion(campos){
     const conf = { oficio:0, fechaOficio:0, fechaLimite:0, asunto:0, accion:0 };
     if (campos.oficio) conf.oficio = /\d{2,}\/20\d{2}/.test(campos.oficio) ? 95 : 75;
@@ -1142,7 +1235,6 @@ function pintarConfianza(id, pct){
     el.textContent = pct + "%";
     el.className = "conf-badge " + claseConfianza(pct);
 }
-
 async function procesarPDF(file){
     if (!file) return;
     const status = document.getElementById("pdfStatus");
@@ -1152,13 +1244,11 @@ async function procesarPDF(file){
     document.getElementById("pdfCampos").style.display = "none";
     document.getElementById("pdfBotones").style.display = "none";
     document.getElementById("pdfPreviewWrap").style.display = "none";
-
     try {
         if (file.type !== "application/pdf" && !/\.pdf$/i.test(file.name)) throw new Error("Seleccione un archivo PDF válido.");
         const buffer = await file.arrayBuffer();
         const pdfjs = await cargarPDFJS();
         const pdf = await pdfjs.getDocument({ data: buffer }).promise;
-
         const paginasTexto = [];
         let totalChars = 0;
         for (let p = 1; p <= pdf.numPages; p++) {
@@ -1168,10 +1258,8 @@ async function procesarPDF(file){
             paginasTexto.push(textoPagina);
             totalChars += (textoPagina.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9]/g)||[]).length;
         }
-
         let texto;
         const umbralMinimo = 120 * pdf.numPages;
-
         if (totalChars < umbralMinimo) {
             status.textContent = "Texto insuficiente. Aplicando OCR en español…";
             const paginasOCR = [];
@@ -1189,20 +1277,16 @@ async function procesarPDF(file){
         } else {
             texto = construirTextoLimpioPDF(paginasTexto);
         }
-
         pdfTextoTemporal = texto;
         document.getElementById("pdfPreview").textContent = texto.slice(0, 7000);
         document.getElementById("pdfPreviewWrap").style.display = "block";
-
         const oficio = extraerOficioPDF(texto);
         const fechaOficio = extraerFechaOficioPDF(texto);
         const fechaLimite = extraerFechaLimitePDF(texto);
         const asunto = extraerAsuntoPDF(texto);
         const accion = extraerAccionPDF(texto);
         const asuntoExplicito = /\basunto\s*[:：]/i.test(texto);
-
         const conf = calcularConfianzaExtraccion({ oficio, fechaOficio, fechaLimite, asunto, accion, asuntoExplicito });
-
         document.getElementById("pdfOficio").value = oficio;
         document.getElementById("pdfOficio").placeholder = oficio ? "" : "Ej. S/N (sin número)";
         document.getElementById("pdfFechaOficio").value = fechaOficio;
@@ -1212,30 +1296,24 @@ async function procesarPDF(file){
         document.getElementById("pdfEstado").value = "Pendiente";
         document.getElementById("pdfLiga").value = "";
         document.getElementById("pdfNotas").value = "";
-
         pintarConfianza("confOficio", conf.oficio);
         pintarConfianza("confFechaOficio", conf.fechaOficio);
         pintarConfianza("confFechaLimite", conf.fechaLimite);
         pintarConfianza("confAsunto", conf.asunto);
         pintarConfianza("confAccion", conf.accion);
-
         const faltantes = [];
         if (!oficio) faltantes.push("Oficio / Circular (puede escribir 'S/N' si el documento no tiene número)");
         if (!fechaOficio) faltantes.push("Fecha del oficio");
         if (!fechaLimite) faltantes.push("Fecha límite");
         if (!asunto) faltantes.push("Asunto / Actividad");
         if (!accion) faltantes.push("Acción a realizar");
-
         if (faltantes.length) {
             alertas.innerHTML += `<div class="pdf-alerta">⚠️ No fue posible identificar automáticamente: <strong>${faltantes.join(", ")}</strong>. Puede capturarlos manualmente antes de guardar.</div>`;
         }
-
         document.getElementById("pdfCampos").style.display = "grid";
         document.getElementById("pdfBotones").style.display = "grid";
-
         const encontrados = [oficio, fechaOficio, fechaLimite, asunto, accion].filter(Boolean).length;
         status.textContent = `✓ ${pdf.numPages} página(s) procesada(s). ${encontrados}/5 datos detectados automáticamente.`;
-
     } catch (error) {
         console.error(error);
         status.textContent = "⚠️ " + (error.message || "No fue posible procesar el PDF.");
@@ -1245,7 +1323,6 @@ async function procesarPDF(file){
         pdfTextoTemporal = "";
     }
 }
-
 function guardarCircularPDF(){
     const oficio = document.getElementById("pdfOficio").value.trim();
     const fechaOficio = document.getElementById("pdfFechaOficio").value;
@@ -1261,19 +1338,8 @@ function guardarCircularPDF(){
     mostrarToast("Circular agregada a la agenda", oficio, "info");
 }
 
-/* =========================================================================
-   RESPALDO JSON
-========================================================================= */
+/* ===================== RESPALDO JSON ===================== */
 let respaldoImportTemporal = [];
-
-function limpiarValorEstado(v) {
-    const s = sinAcentosPDF(String(v||"")).toLowerCase();
-    if (/conclu/.test(s)) return "Concluido";
-    if (/proces/.test(s)) return "En proceso";
-    if (/pendien/.test(s)) return "Pendiente";
-    return "Pendiente";
-}
-
 function abrirRespaldo() {
     const modal = document.getElementById("modalRespaldo");
     modal.classList.add("visible");
@@ -1284,7 +1350,6 @@ function abrirRespaldo() {
     document.getElementById("respaldoCount").textContent = asuntos.length;
     respaldoImportTemporal = [];
 }
-
 function cerrarRespaldo() {
     const modal = document.getElementById("modalRespaldo");
     modal.classList.remove("visible");
@@ -1294,11 +1359,10 @@ function cerrarRespaldo() {
     document.getElementById("respaldoBotones").style.display = "none";
     respaldoImportTemporal = [];
 }
-
 function descargarRespaldo() {
     const respaldo = {
         app: "AgendaGPT Mobile",
-        version: 6,
+        version: 8,
         fecha: new Date().toISOString(),
         total: asuntos.length,
         asuntos: asuntos
@@ -1311,25 +1375,21 @@ function descargarRespaldo() {
     );
     mostrarToast("Respaldo descargado", `${asuntos.length} asuntos guardados`, "info");
 }
-
 async function procesarRespaldo(file) {
     if (!file) return;
     const status = document.getElementById("respaldoStatus");
     status.textContent = "Leyendo respaldo…";
     document.getElementById("respaldoBotones").style.display = "none";
     respaldoImportTemporal = [];
-
     try {
         const texto = await file.text();
         let data;
         try { data = JSON.parse(texto); }
         catch(_) { throw new Error("El archivo no es un respaldo válido (JSON malformado)."); }
-
         let lista = null;
         if (Array.isArray(data)) lista = data;
         else if (data && Array.isArray(data.asuntos)) lista = data.asuntos;
         if (!lista || lista.length === 0) throw new Error("El respaldo no contiene asuntos.");
-
         const limpios = [];
         lista.forEach(r => {
             if (!r || typeof r !== "object") return;
@@ -1347,9 +1407,7 @@ async function procesarRespaldo(file) {
                 estado: limpiarValorEstado(r.estado)
             });
         });
-
         if (limpios.length === 0) throw new Error("El respaldo no contiene asuntos válidos.");
-
         respaldoImportTemporal = limpios;
         status.textContent = `✓ Respaldo válido con ${limpios.length} asunto(s)${data.fecha ? " · generado el " + new Date(data.fecha).toLocaleString("es-MX") : ""}.`;
         document.getElementById("respaldoBotones").style.display = "block";
@@ -1358,28 +1416,17 @@ async function procesarRespaldo(file) {
         status.textContent = "⚠️ " + (error.message || "No se pudo leer el respaldo.");
     }
 }
-
 function confirmarRestaurar(modo) {
     if (!respaldoImportTemporal.length) return;
     if (modo === "reemplazar") {
-        mostrarModal(
-            `Se eliminarán TODOS los asuntos actuales y se restaurarán ${respaldoImportTemporal.length} desde el respaldo. ¿Continuar?`,
-            () => aplicarRestaurar("reemplazar")
-        );
+        mostrarModal(`Se eliminarán TODOS los asuntos actuales y se restaurarán ${respaldoImportTemporal.length} desde el respaldo. ¿Continuar?`, () => aplicarRestaurar("reemplazar"));
     } else {
-        mostrarModal(
-            `Se agregarán ${respaldoImportTemporal.length} asuntos del respaldo, omitiendo duplicados exactos. ¿Continuar?`,
-            () => aplicarRestaurar("fusionar")
-        );
+        mostrarModal(`Se agregarán ${respaldoImportTemporal.length} asuntos del respaldo, omitiendo duplicados exactos. ¿Continuar?`, () => aplicarRestaurar("fusionar"));
     }
 }
-
 function aplicarRestaurar(modo) {
     const base = modo === "reemplazar" ? [] : [...asuntos];
-    const clavesExistentes = new Set(base.map(a =>
-        (a.oficio||"").toLowerCase().trim() + "||" + (a.asunto||"").toLowerCase().trim()
-    ));
-
+    const clavesExistentes = new Set(base.map(a => (a.oficio||"").toLowerCase().trim() + "||" + (a.asunto||"").toLowerCase().trim()));
     let agregados = 0, duplicados = 0;
     const ahora = Date.now();
     respaldoImportTemporal.forEach((r, i) => {
@@ -1389,7 +1436,6 @@ function aplicarRestaurar(modo) {
         base.push({ id: ahora + i, creado: ahora + i, ...r });
         agregados++;
     });
-
     asuntos = base;
     guardarLocal();
     renderizar();
@@ -1408,5 +1454,5 @@ if ("serviceWorker" in navigator) {
 renderizar();
 setInterval(renderizar, 60000);
 </script>
-</body>
-</html>
+
+</body></html>

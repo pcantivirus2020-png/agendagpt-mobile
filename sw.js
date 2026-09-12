@@ -1,4 +1,4 @@
-const CACHE = "agendagpt-mobile-v6";
+const CACHE = "agendagpt-mobile-v8";
 const APP_SHELL = [
   "./AgendaGPT_Mobile.html",
   "./manifest.webmanifest",
