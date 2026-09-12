@@ -136,6 +136,148 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
 @media (max-width:430px) { body{padding:6px;} .contenedor{padding:10px;} .botones{grid-template-columns:1fr;} .botones button:first-child{grid-column:auto;} .form-botones{grid-template-columns:1fr;} #cuerpoTabla tr td{font-size:12px;} .acciones{grid-template-columns:1fr 1fr 38px;} }
 @media (min-width:721px) { body{padding:20px;} .contenedor{margin-top:10px;} }
 @media print { body{padding:0;background:#fff;} .contenedor{box-shadow:none;max-width:none;} .botones,.filtros,.formulario,.acciones,.modal{display:none!important;} #tablaAgenda thead{display:table-header-group;} #tablaAgenda,#tablaAgenda tbody,#tablaAgenda tr,#tablaAgenda td,#tablaAgenda th{display:table;} }
+/* =========================================================
+   AJUSTE PARA PC / LAPTOP — se activa solo en pantallas
+   anchas (≥ 900 px). No afecta al celular ni a tablets.
+   ========================================================= */
+@media (min-width: 900px) {
+
+    /* --- Contenedor: ocupa hasta 1500 px de ancho --- */
+    body { padding: 22px; }
+    .contenedor {
+        max-width: 1500px;
+        margin: 12px auto;
+        padding: 22px 26px;
+        border-radius: 16px;
+    }
+
+    .encabezado { margin-bottom: 18px; }
+    .encabezado h1 { font-size: 26px; }
+    .encabezado p { font-size: 13px; }
+
+    /* --- Dashboard: 5 columnas en una sola fila --- */
+    .dashboard {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 12px;
+        margin-bottom: 22px;
+    }
+    .dashboard .tarjeta:first-child { grid-column: auto; }
+    .tarjeta { padding: 14px 10px; border-radius: 12px; }
+    .tarjeta .numero { font-size: 26px; }
+    .tarjeta .texto { font-size: 11px; }
+
+    /* --- Botones: fila flexible, no rejilla 2×2 --- */
+    .botones {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 18px;
+    }
+    .botones button {
+        min-height: auto;
+        font-size: 13px;
+        padding: 10px 16px;
+    }
+    .botones button:first-child { grid-column: auto; }
+
+    /* --- Formulario: 4 columnas --- */
+    .form-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+    }
+    .campo-completo { grid-column: 1 / -1; }
+    .campo input,
+    .campo select,
+    .campo textarea,
+    .filtros input,
+    .filtros select {
+        font-size: 13px;
+        min-height: auto;
+    }
+    .campo textarea { min-height: 80px; }
+    .form-botones {
+        display: flex;
+        grid-template-columns: none;
+        gap: 8px;
+    }
+    .form-botones button { min-height: auto; }
+
+    /* --- Filtros: búsqueda ancha + 3 selects --- */
+    .filtros {
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    /* --- Tabla: vuelve a formato tabla clásico --- */
+    .tabla-contenedor { overflow-x: auto; }
+    #tablaAgenda {
+        display: table;
+        min-width: 1300px;
+        width: 100%;
+    }
+    #tablaAgenda thead { display: table-header-group; }
+    #cuerpoTabla { display: table-row-group; }
+
+    #cuerpoTabla tr {
+        display: table-row;
+        background: transparent;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        position: static;
+    }
+
+    #cuerpoTabla tr td {
+        display: table-cell;
+        padding: 9px;
+        font-size: 12px;
+        line-height: 1.45;
+        vertical-align: top;
+        border-bottom: 1px solid #e5e9f0;
+        border-right: 1px solid #eef1f6;
+    }
+    #cuerpoTabla tr td:first-child { padding: 9px; }
+    #cuerpoTabla tr td:nth-child(2) {
+        font-size: 12px;
+        font-weight: 700;
+        color: #1F4E79;
+        padding: 9px;
+    }
+    #cuerpoTabla tr td:nth-child(3),
+    #cuerpoTabla tr td:nth-child(5),
+    #cuerpoTabla tr td:nth-child(6) { background: transparent; }
+    #cuerpoTabla tr td:nth-child(4),
+    #cuerpoTabla tr td:nth-child(7),
+    #cuerpoTabla tr td:nth-child(9) {
+        grid-column: auto;
+        padding: 9px;
+    }
+
+    /* Elimina las etiquetas ::before que solo aplican al móvil */
+    #cuerpoTabla tr td:nth-child(3)::before,
+    #cuerpoTabla tr td:nth-child(4)::before,
+    #cuerpoTabla tr td:nth-child(5)::before,
+    #cuerpoTabla tr td:nth-child(6)::before,
+    #cuerpoTabla tr td:nth-child(7)::before { content: none; }
+
+    /* --- Acciones: fila horizontal, no rejilla --- */
+    .acciones {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    .acciones button {
+        min-height: auto;
+        padding: 5px 8px;
+        font-size: 11px;
+    }
+
+    /* --- Modales: un poco más anchos en PC --- */
+    .modal-contenido { max-width: 720px; }
+    .pdf-preview { max-height: 220px; font-size: 12px; }
+}
 </style>
 </head>
 <body>
