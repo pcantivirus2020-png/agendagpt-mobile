@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#1F4E79">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<title>AgendaGPT Mobile</title>
+<style>
+* { box-sizing: border-box; }
+body { margin:0; padding:25px; font-family:"Segoe UI",Calibri,Arial,sans-serif; background:linear-gradient(135deg,#eef2f7,#dfe7f1); color:#1f2d3d; }
+.contenedor { max-width:1800px; margin:auto; background:#fff; border-radius:16px; box-shadow:0 12px 35px rgba(0,0,0,.13); padding:25px; }
+.encabezado { text-align:center; margin-bottom:25px; }
+.encabezado h1 { margin:0; color:#1F4E79; font-size:28px; }
+.encabezado p { margin:6px 0 0; color:#6b7a8f; font-size:14px; }
+.dashboard { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:25px; }
+.tarjeta { padding:15px; border-radius:12px; text-align:center; border:1px solid #e2e7ef; background:#f8fafc; }
+.tarjeta .numero { display:block; font-size:28px; font-weight:800; }
+.tarjeta .texto { font-size:12px; font-weight:600; color:#64748b; }
+.tarjeta-total .numero { color:#1F4E79; }
+.tarjeta-critica { background:#fff1f2; } .tarjeta-critica .numero { color:#c00000; }
+.tarjeta-alta { background:#fff8e8; } .tarjeta-alta .numero { color:#d66a00; }
+.tarjeta-media { background:#fffbea; } .tarjeta-media .numero { color:#b88600; }
+.tarjeta-concluida { background:#effaf2; } .tarjeta-concluida .numero { color:#198754; }
+.botones { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:20px; }
+button { border:none; border-radius:8px; padding:10px 16px; font-size:13px; font-weight:600; cursor:pointer; transition:.2s; }
+button:hover { transform:translateY(-1px); filter:brightness(.96); }
+.btn-principal { background:#1F4E79; color:white; }
+.btn-secundario { background:#e8eef7; color:#1F4E79; }
+.btn-verde { background:#198754; color:white; }
+.btn-rojo { background:#c00000; color:white; }
+.btn-naranja { background:#ed7d31; color:white; }
+.btn-gris { background:#64748b; color:white; }
+.formulario { display:none; background:#f5f8fc; border:1px solid #dce5ef; border-radius:12px; padding:20px; margin-bottom:22px; }
+.formulario.visible { display:block; }
+.formulario h2 { margin-top:0; color:#1F4E79; font-size:20px; }
+.form-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+.campo { display:flex; flex-direction:column; }
+.campo-completo { grid-column:1/-1; }
+.campo label { font-size:12px; font-weight:700; color:#475569; margin-bottom:5px; }
+.campo input,.campo select,.campo textarea { border:1px solid #cbd5e1; border-radius:7px; padding:9px; font-family:inherit; font-size:13px; background:white; }
+.campo textarea { min-height:80px; resize:vertical; }
+.campo input:focus,.campo select:focus,.campo textarea:focus { outline:none; border-color:#1F4E79; box-shadow:0 0 0 2px rgba(31,78,121,.12); }
+.form-botones { margin-top:15px; display:flex; gap:8px; }
+.filtros { display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:10px; margin-bottom:18px; }
+.filtros input,.filtros select { border:1px solid #cbd5e1; border-radius:8px; padding:10px; font-family:inherit; }
+.tabla-contenedor { overflow-x:auto; border-radius:10px; box-shadow:0 3px 12px rgba(0,0,0,.08); }
+table { border-collapse:collapse; width:100%; min-width:1400px; font-size:12px; }
+thead th { background:linear-gradient(135deg,#1F4E79,#2b6ca3); color:white; padding:11px 9px; text-align:left; white-space:nowrap; }
+tbody td { padding:9px; vertical-align:top; border-bottom:1px solid #e5e9f0; border-right:1px solid #eef1f6; }
+tbody tr:hover td { filter:brightness(.97); }
+.fila-critica td { background:#fff5f6; }
+.fila-alta td { background:#fffbf0; }
+.fila-media td { background:#fffdf0; }
+.fila-concluida td { background:#f3faf5; color:#52605a; }
+.prioridad { display:inline-block; padding:5px 9px; border-radius:6px; font-weight:700; white-space:nowrap; }
+.prioridad-critica { background:#c00000; color:white; }
+.prioridad-alta { background:#ed7d31; color:white; }
+.prioridad-media { background:#ffc000; color:#5a3b00; }
+.prioridad-concluida { background:#198754; color:white; }
+.estado { display:inline-block; padding:5px 8px; border-radius:6px; font-size:11px; font-weight:700; white-space:nowrap; }
+.estado-pendiente { background:#fde0e3; color:#a1000e; }
+.estado-proceso { background:#fff0c2; color:#8a5a00; }
+.estado-concluido { background:#d4f0d9; color:#1f6b34; }
+.fecha-vencida { color:#c00000; font-weight:800; }
+.fecha-hoy { color:#d66a00; font-weight:800; }
+.fecha-normal { color:#334155; }
+.oficio { font-weight:700; color:#1F4E79; }
+.acciones { display:flex; gap:5px; flex-wrap:wrap; }
+.acciones button { padding:5px 8px; font-size:11px; }
+.btn-editar { background:#e8eef7; color:#1F4E79; }
+.btn-concluir { background:#d4f0d9; color:#1f6b34; }
+.btn-eliminar { background:#fde0e3; color:#a1000e; }
+.vacio { text-align:center; padding:35px; color:#64748b; font-size:14px; }
+.modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:1000; align-items:center; justify-content:center; padding:20px; }
+.modal.visible { display:flex; }
+.modal-contenido { background:white; max-width:550px; width:100%; border-radius:14px; padding:25px; box-shadow:0 15px 45px rgba(0,0,0,.25); }
+.modal-contenido h2 { color:#1F4E79; margin-top:0; }
+.conf-badge { display:inline-block; font-size:10px; font-weight:800; padding:2px 7px; border-radius:999px; margin-left:6px; background:#e2e8f0; color:#64748b; vertical-align:middle; letter-spacing:.3px; }
+.conf-alta { background:#d4f0d9; color:#1f6b34; }
+.conf-media { background:#fff0c2; color:#8a5a00; }
+.conf-baja { background:#fde0e3; color:#a1000e; }
+.conf-na { background:#e2e8f0; color:#64748b; }
+.pdf-alerta { background:#fff8e8; border:1px solid #f5d78a; color:#8a5a00; border-radius:10px; padding:10px 12px; font-size:12px; margin:6px 0 10px; }
+@media (max-width:1000px) { body{padding:10px;} .dashboard{grid-template-columns:repeat(2,1fr);} .form-grid{grid-template-columns:1fr 1fr;} .filtros{grid-template-columns:1fr 1fr;} }
+@media (max-width:600px) { .contenedor{padding:15px;} .dashboard{grid-template-columns:1fr 1fr;} .form-grid{grid-template-columns:1fr;} .campo-completo{grid-column:auto;} .filtros{grid-template-columns:1fr;} .encabezado h1{font-size:21px;} }
+@media print { body{background:white;padding:0;} .contenedor{box-shadow:none;padding:0;} .botones,.formulario,.filtros,.acciones{display:none!important;} .dashboard{grid-template-columns:repeat(5,1fr);} table{min-width:0;font-size:8px;} thead th{padding:5px;} tbody td{padding:5px;} .prioridad,.estado{font-size:8px;padding:3px;} @page{size:landscape;margin:8mm;} }
+html { scroll-behavior:smooth; }
+body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
+.contenedor { max-width:720px; padding:14px; border-radius:18px; box-shadow:0 10px 30px rgba(15,23,42,.12); }
+.encabezado { margin-bottom:14px; } .encabezado h1 { font-size:22px; line-height:1.15; } .encabezado p { font-size:12px; line-height:1.45; }
+.dashboard { grid-template-columns:repeat(2,1fr); gap:8px; margin-bottom:12px; }
+.dashboard .tarjeta:first-child { grid-column:1/-1; }
+.tarjeta { padding:11px 8px; border-radius:12px; }
+.tarjeta .numero { font-size:24px; } .tarjeta .texto { font-size:10px; font-weight:700; }
+.botones { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px; }
+.botones button { min-height:46px; font-size:13px; }
+.botones button:first-child { grid-column:1/-1; }
+.formulario { margin-bottom:14px; } .form-grid { grid-template-columns:1fr; gap:10px; } .campo-completo { grid-column:auto; }
+.campo input,.campo textarea,.campo select,.filtros input,.filtros select { font-size:16px; min-height:44px; }
+.campo textarea { min-height:105px; }
+.form-botones { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.form-botones button { min-height:46px; }
+.filtros { grid-template-columns:1fr; gap:8px; margin-bottom:12px; }
+.filtros input,.filtros select { width:100%; }
+.tabla-contenedor { overflow:visible; }
+#tablaAgenda { display:block; min-width:0; } #tablaAgenda thead { display:none; }
+#cuerpoTabla { display:flex; flex-direction:column; gap:10px; }
+#cuerpoTabla tr { display:grid; grid-template-columns:1fr 1fr; gap:0; background:#fff; border:1px solid #dbe3ec; border-radius:15px; overflow:hidden; box-shadow:0 4px 14px rgba(15,23,42,.07); position:relative; }
+#cuerpoTabla tr td { display:block; border:0; padding:9px 11px; font-size:13px; line-height:1.45; vertical-align:top; }
+#cuerpoTabla tr td:first-child { grid-column:1/-1; padding-bottom:4px; }
+#cuerpoTabla tr td:nth-child(2) { grid-column:1/-1; padding-top:2px; font-size:15px; font-weight:800; color:#1f4e79; }
+#cuerpoTabla tr td:nth-child(3),#cuerpoTabla tr td:nth-child(5),#cuerpoTabla tr td:nth-child(6) { background:#f8fafc; }
+#cuerpoTabla tr td:nth-child(4),#cuerpoTabla tr td:nth-child(7) { grid-column:1/-1; }
+#cuerpoTabla tr td:nth-child(8) { align-self:center; }
+#cuerpoTabla tr td:nth-child(9) { grid-column:1/-1; padding-top:5px; }
+#cuerpoTabla tr td:nth-child(3)::before { content:'Fecha oficio'; display:block; color:#64748b; font-size:10px; font-weight:800; text-transform:uppercase; }
+#cuerpoTabla tr td:nth-child(5)::before { content:'Fecha límite'; display:block; color:#64748b; font-size:10px; font-weight:800; text-transform:uppercase; }
+#cuerpoTabla tr td:nth-child(6)::before { content:'Tiempo'; display:block; color:#64748b; font-size:10px; font-weight:800; text-transform:uppercase; }
+#cuerpoTabla tr td:nth-child(4)::before { content:'Asunto / actividad'; display:block; color:#64748b; font-size:10px; font-weight:800; text-transform:uppercase; margin-bottom:3px; }
+#cuerpoTabla tr td:nth-child(7)::before { content:'Acción a realizar'; display:block; color:#64748b; font-size:10px; font-weight:800; text-transform:uppercase; margin-bottom:3px; }
+.acciones { display:grid; grid-template-columns:1fr 1fr 42px; gap:7px; }
+.acciones button { min-height:40px; }
+.vacio { grid-column:1/-1 !important; text-align:center; padding:28px 14px !important; color:#64748b; }
+.modal { padding:10px; }
+.modal-contenido { width:min(100%,650px); max-height:92vh; overflow:auto; padding:18px; border-radius:18px; }
+.pdf-zone { border:2px dashed #8fa9c4; background:#f7fafc; border-radius:14px; padding:18px; text-align:center; margin:12px 0; }
+.pdf-zone input { width:100%; font-size:15px; }
+.pdf-status { margin-top:9px; font-size:12px; color:#64748b; min-height:18px; }
+.pdf-preview { background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:10px; max-height:170px; overflow:auto; white-space:pre-wrap; font-size:11px; color:#475569; margin:10px 0; }
+.badge-ia { display:inline-flex; align-items:center; gap:5px; padding:4px 8px; border-radius:999px; background:#eaf2fb; color:#1f4e79; font-size:11px; font-weight:800; }
+.pwa-install { display:none; }
+@media (max-width:430px) { body{padding:6px;} .contenedor{padding:10px;} .botones{grid-template-columns:1fr;} .botones button:first-child{grid-column:auto;} .form-botones{grid-template-columns:1fr;} #cuerpoTabla tr td{font-size:12px;} .acciones{grid-template-columns:1fr 1fr 38px;} }
+@media (min-width:721px) { body{padding:20px;} .contenedor{margin-top:10px;} }
+@media print { body{padding:0;background:#fff;} .contenedor{box-shadow:none;max-width:none;} .botones,.filtros,.formulario,.acciones,.modal{display:none!important;} #tablaAgenda thead{display:table-header-group;} #tablaAgenda,#tablaAgenda tbody,#tablaAgenda tr,#tablaAgenda td,#tablaAgenda th{display:table;} }
+</style>
+</head>
+<body>
+
+<div class="contenedor">
+    <div class="encabezado">
+        <h1>📋 AgendaGPT Mobile</h1>
+        <p>Control automático de asuntos, actividades y fechas límite — Ciclo escolar 2026-2027</p>
+    </div>
+
+    <div class="dashboard">
+        <div class="tarjeta tarjeta-total"><span class="numero" id="total">0</span><span class="texto">TOTAL DE ASUNTOS</span></div>
+        <div class="tarjeta tarjeta-critica"><span class="numero" id="criticas">0</span><span class="texto">🔴 CRÍTICOS</span></div>
+        <div class="tarjeta tarjeta-alta"><span class="numero" id="altas">0</span><span class="texto">🟠 ALTOS</span></div>
+        <div class="tarjeta tarjeta-media"><span class="numero" id="medias">0</span><span class="texto">🟡 MEDIOS</span></div>
+        <div class="tarjeta tarjeta-concluida"><span class="numero" id="concluidos">0</span><span class="texto">🟢 CONCLUIDOS</span></div>
+    </div>
+
+    <div class="botones">
+        <button class="btn-principal" onclick="mostrarFormulario()">➕ Nuevo asunto</button>
+        <button class="btn-principal" onclick="abrirImportadorPDF()">📄 Agregar circular PDF</button>
+        <button class="btn-verde" onclick="exportarExcel()">📊 Exportar Excel</button>
+        <button class="btn-principal" onclick="descargarWord()">📄 Descargar Word</button>
+        <button class="btn-secundario" onclick="window.print()">🖨️ Imprimir / PDF</button>
+        <button class="btn-rojo" onclick="confirmarBorradoTotal()">🗑️ Borrar todos</button>
+    </div>
+
+    <div class="formulario" id="formulario">
+        <h2 id="tituloFormulario">➕ Registrar nuevo asunto</h2>
+        <input type="hidden" id="idEdicion">
+        <div class="form-grid">
+            <div class="campo"><label>📄 Oficio / Circular</label><input type="text" id="oficio" placeholder="Ej. SE/DEP/DATP/290/2026 o S/N"></div>
+            <div class="campo"><label>📅 Fecha del oficio</label><input type="date" id="fechaOficio"></div>
+            <div class="campo"><label>📆 Fecha límite</label><input type="date" id="fechaLimite"></div>
+            <div class="campo"><label>📌 Estado</label>
+                <select id="estado">
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="En proceso">En proceso</option>
+                    <option value="Concluido">Concluido</option>
+                </select>
+            </div>
+            <div class="campo campo-completo"><label>📌 Asunto / Actividad</label><textarea id="asunto" placeholder="Escriba el asunto o actividad..."></textarea></div>
+            <div class="campo campo-completo"><label>✅ Acción a realizar</label><textarea id="accion" placeholder="Describa las acciones que deben realizarse..."></textarea></div>
+            <div class="campo campo-completo"><label>🔗 Liga / información adicional</label><input type="text" id="liga" placeholder="Opcional"></div>
+            <div class="campo campo-completo"><label>📝 Notas internas (opcional)</label><textarea id="notas" placeholder="Observaciones, recordatorios, información adicional..."></textarea></div>
+        </div>
+        <div class="form-botones">
+            <button class="btn-principal" onclick="guardarAsunto()">💾 Guardar asunto</button>
+            <button class="btn-secundario" onclick="cancelarFormulario()">Cancelar</button>
+        </div>
+    </div>
+
+    <div class="filtros">
+        <input type="text" id="busqueda" placeholder="🔎 Buscar por oficio, asunto, acción o notas..." oninput="renderizar()">
+        <select id="filtroPrioridad" onchange="renderizar()">
+            <option value="Todas">Todas las prioridades</option>
+            <option value="Crítica">🔴 Crítica</option>
+            <option value="Alta">🟠 Alta</option>
+            <option value="Media">🟡 Media</option>
+        </select>
+        <select id="filtroEstado" onchange="renderizar()">
+            <option value="Todos">Todos los estados</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="En proceso">En proceso</option>
+            <option value="Concluido">Concluido</option>
+        </select>
+        <select id="orden" onchange="renderizar()">
+            <option value="urgencia">Ordenar por urgencia</option>
+            <option value="fecha">Fecha límite</option>
+            <option value="oficio">Oficio</option>
+            <option value="nuevo">Más recientes</option>
+        </select>
+    </div>
+
+    <div class="tabla-contenedor">
+        <table id="tablaAgenda">
+            <thead>
+                <tr>
+                    <th>🔢 PRIORIDAD</th><th>📄 OFICIO / CIRCULAR</th><th>📅 FECHA DEL OFICIO</th>
+                    <th>📌 ASUNTO / ACTIVIDAD</th><th>📆 FECHA LÍMITE</th><th>⏳ TIEMPO</th>
+                    <th>✅ ACCIÓN A REALIZAR</th><th>📍 ESTADO</th><th>⚙️ ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody id="cuerpoTabla"></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- MODAL PDF -->
+<div class="modal" id="modalPDF" aria-hidden="true">
+    <div class="modal-contenido">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+            <div>
+                <span class="badge-ia">📄 EXTRACCIÓN LOCAL · PDF + OCR</span>
+                <h2 style="margin:8px 0 0;color:#1F4E79;">Agregar circular desde PDF</h2>
+            </div>
+            <button class="btn-secundario" onclick="cerrarImportadorPDF()" aria-label="Cerrar">✕</button>
+        </div>
+        <p style="font-size:12px;color:#64748b;margin:8px 0 12px;">
+            El PDF se usa únicamente para extraer la información. No se guarda en la agenda ni en el almacenamiento del navegador. Todo el procesamiento es local en su dispositivo.
+        </p>
+        <div class="pdf-zone">
+            <input id="archivoPDF" type="file" accept="application/pdf" onchange="procesarPDF(this.files[0])">
+            <div id="pdfStatus" class="pdf-status">Seleccione una circular u oficio en PDF.</div>
+        </div>
+        <div id="pdfAlertas"></div>
+        <div id="pdfPreviewWrap" style="display:none;">
+            <div style="font-weight:800;color:#334155;font-size:12px;">Texto detectado (limpio)</div>
+            <div id="pdfPreview" class="pdf-preview"></div>
+        </div>
+        <div id="pdfCampos" style="display:none;" class="form-grid">
+            <div class="campo">
+                <label>📄 Oficio / Circular <span class="conf-badge" id="confOficio">—</span></label>
+                <input id="pdfOficio" type="text">
+            </div>
+            <div class="campo">
+                <label>📅 Fecha del oficio <span class="conf-badge" id="confFechaOficio">—</span></label>
+                <input id="pdfFechaOficio" type="date">
+            </div>
+            <div class="campo">
+                <label>📆 Fecha límite <span class="conf-badge" id="confFechaLimite">—</span></label>
+                <input id="pdfFechaLimite" type="date">
+            </div>
+            <div class="campo">
+                <label>📌 Estado</label>
+                <select id="pdfEstado">
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="En proceso">En proceso</option>
+                    <option value="Concluido">Concluido</option>
+                </select>
+            </div>
+            <div class="campo campo-completo">
+                <label>📌 Asunto / Actividad <span class="conf-badge" id="confAsunto">—</span></label>
+                <textarea id="pdfAsunto"></textarea>
+            </div>
+            <div class="campo campo-completo">
+                <label>✅ Acción a realizar <span class="conf-badge" id="confAccion">—</span></label>
+                <textarea id="pdfAccion"></textarea>
+            </div>
+            <div class="campo campo-completo">
+                <label>🔗 Liga / información adicional</label>
+                <input id="pdfLiga" type="text">
+            </div>
+            <div class="campo campo-completo">
+                <label>📝 Notas internas (opcional)</label>
+                <textarea id="pdfNotas" placeholder="Observaciones, recordatorios, información adicional..."></textarea>
+            </div>
+        </div>
+        <div class="form-botones" id="pdfBotones" style="display:none;margin-top:10px;">
+            <button class="btn-principal" onclick="guardarCircularPDF()">💾 Agregar a la agenda</button>
+            <button class="btn-secundario" onclick="cerrarImportadorPDF()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL CONFIRMACIÓN -->
+<div class="modal" id="modal">
+    <div class="modal-contenido">
+        <h2>⚠️ Confirmación</h2>
+        <p id="mensajeModal"></p>
+        <div class="form-botones">
+            <button class="btn-rojo" id="confirmarModal">Confirmar</button>
+            <button class="btn-secundario" onclick="cerrarModal()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+/* ===================== CONFIGURACIÓN ===================== */
+const STORAGE_KEY = "AGENDA_ASUNTOS_2026_2027";
+
+/* ===================== DATOS INICIALES ===================== */
+const datosIniciales = [
+{oficio:"SE/DEP/DT/287/2026",fechaOficio:"2026-09-08",asunto:"Solicitud de docentes de Inglés de nivel primaria para certificación internacional",fechaLimite:"2026-09-11",accion:"Difundir convocatoria; seleccionar docentes participantes y remitir relación al correo tecnicoprimaria@correo.setab.gob.mx usando archivo anexo.",estado:"Pendiente",liga:"",notas:""},
+{oficio:"Circular SE/DEP/DATP/271/2026",fechaOficio:"2026-09-01",asunto:'Jornada "Te escucho, te comprendo, te protejo"',fechaLimite:"2026-09-14",accion:"Dar seguimiento a la Segunda Jornada de Concientización; promover actividades formativas/informativas; remitir por sector información concentrada en Excel y ficha técnica al correo tecnicoprimaria@correo.setab.gob.mx.",estado:"Pendiente",liga:"Evento 07 de septiembre de 2026",notas:""},
+{oficio:"SE/CGPEI/DCEI/3420/2026",fechaOficio:"2026-08-26",asunto:'Instrucciones de trabajo "Procesos de inicio de ciclo escolar 2026-2027 (inscripción y reinscripción)"',fechaLimite:"2026-09-14",accion:"Compartir instrucciones; verificar/actualizar datos de escuela, grupos, turnos, alumnos y personal; concluir registro de maestros; realizar inscripción y reinscripción; atender altas, bajas, cambios y remitir documentación PDF.",estado:"Pendiente",liga:"",notas:""},
+{oficio:"SE/DEP/DATP/275/2026",fechaOficio:"2026-09-02",asunto:"Medidas preventivas y filtro escolar contra el sarampión",fechaLimite:"2026-09-18",accion:"Difundir recomendaciones; fortalecer vigilancia epidemiológica; ante síntomas evitar permanencia, informar a tutor, recomendar valoración y notificar a jurisdicción sanitaria; promover vacunación; remitir acciones en formato anexo al correo tecnicoprimaria@correo.setab.gob.mx.",estado:"Pendiente",liga:"",notas:""},
+{oficio:"SE/DEP/DATP/274/2026",fechaOficio:"2026-09-02",asunto:"Recomendaciones contra dengue, Zika y Chikunguña",fechaLimite:"2026-09-18",accion:'Difundir medidas preventivas; mantener planteles libres de criaderos; jornadas de limpieza/descacharrización; tapar depósitos; usar repelente/ropa protectora; estrategia "Lava, Tapa, Voltea y Tira"; reportar sitios de riesgo; remitir acciones al correo tecnicoprimaria@correo.setab.gob.mx.',estado:"Pendiente",liga:"",notas:""},
+{oficio:"SE/DEP/DATP/290/2026",fechaOficio:"2026-09-08",asunto:'Difusión de prórroga de inscripción al taller "Metodologías de proyectos sociocríticos en el marco de la NEM"',fechaLimite:"2026-09-18",accion:"Difundir prórroga entre supervisores, directores y personal técnico-pedagógico, especialmente contextos vulnerables, multigrado, rurales, indígenas y educación especial; registro en la plataforma WebCoreX.",estado:"Pendiente",liga:"Curso: 21 de septiembre al 30 de octubre de 2026",notas:""},
+{oficio:"SE/DEP/DCP/326/2026",fechaOficio:"2026-09-08",asunto:"Plantillas de personal, 3er. Trim. 2026 (jul-sep)",fechaLimite:"2026-09-30",accion:'Difundir indicaciones; verificar actualización de datos personales/académicos y documentos en WebcoreX; directores/supervisores/jefes revisar y actualizar "OBSERVACIÓN"; generar plantilla PDF y entregar impresa y digital.',estado:"Pendiente",liga:"Sector 23: entrega a Vhsa el 15 de octubre, 9:00 h",notas:""},
+{oficio:"SE/DEP/DATP/6920/2026",fechaOficio:"2026-09-07",asunto:"Invitación a la Ceremonia de Distinción a Escuelas Promotoras de la Salud y reconocimiento a la Estrategia Nacional Vive Saludable, Vive Feliz",fechaLimite:"2026-09-29",accion:"Difundir invitación; promover asistencia de autoridades, supervisores y representantes de las escuelas convocadas; respetar distribución de lugares; asistir con hoja de papel reciclada. Escuelas Zona Escolar 66: 27DPR0529D María Dolores Pérez Oropeza; 27DPR0540Z Virginia Santamaria; 27DPR0983U Ing. Leandro Rovirosa W.; 27DPR0985S Francisco J. Santamaría; 27DPR0986R Manuel A. Jiménez.",estado:"Pendiente",liga:"Teatro del Estado Esperanza Iris — 29/09/2026 — 09:00 h — puertas 08:00 h",notas:""},
+{oficio:"SE/DEP/DATP/278/2026",fechaOficio:"2026-09-03",asunto:'Convocatoria "Jornadas Nacionales de Juegos Tradicionales"',fechaLimite:"2026-09-18",accion:"Dar amplia difusión entre comunidades educativas; compartir enlaces de convocatoria y registro; seguimiento a cargo del Enlace Estatal L.E.F. Sergio de la Rosa Alejandro.",estado:"Pendiente",liga:"https://forms.gle/jZbjwZApRPAuT9Vv6",notas:""},
+{oficio:"SE/DEP/DCP/5884/2026",fechaOficio:"2026-08-27",asunto:"Remisión de órdenes de comisión de directores de escuelas multigrado y actualización en Webcore",fechaLimite:"",accion:"Remitir en PDF al correo procesos.dep@correo.setab.gob.mx las órdenes de comisión vigentes de directores multigrado y docentes con función directiva; refrendar/actualizar órdenes al inicio del ciclo y actualizar adscripción en Webcore.",estado:"Pendiente",liga:"A la brevedad posible",notas:""},
+{oficio:"Circular DEP/DCP/318/2026",fechaOficio:"2026-08-31",asunto:'Instrucciones de trabajo "Procesos de inicio de ciclo escolar 2026-2027 (inscripción y reinscripción)"',fechaLimite:"2026-09-30",accion:"Dar a conocer y difundir al personal directivo el documento íntegro de Control Escolar; atender plazos, procedimientos, criterios e indicaciones; evitar omisiones.",estado:"Pendiente",liga:"",notas:""},
+{oficio:"Circular SE/DEP/DATP/277/2026",fechaOficio:"2026-09-02",asunto:"Calendarización de Reuniones de Trabajo con supervisores y ATP's",fechaLimite:"2026-09-15",accion:"Difundir y cumplir calendarización; registrar fechas en agendas; en CTE de zona, supervisor/ATP presenta informe de acciones, logros, avances, áreas de oportunidad y compromisos.",estado:"Pendiente",liga:"15/09/2026, 13/10/2026, 08/11/2026, 08/12/2026, 19/01/2027, 09/02/2027, 09/03/2027, 13/04/2027, 11/05/2027 y 08/06/2027",notas:""},
+{oficio:"Circular DEP/DCP/323/2026",fechaOficio:"2026-09-04",asunto:"Instrucciones para aumento de matrícula en grupo, usar el formato enviado del departamento.",fechaLimite:"",accion:"Difundir información; para solicitar aumento, requisitar formato anexo con justificación y firmas de Director, Docente responsable y Supervisor; remitir a Dirección de Educación Primaria o correos indicados.",estado:"Pendiente",liga:"",notas:""},
+{oficio:"SE/DEP/DATP/279/2026",fechaOficio:"2026-09-03",asunto:'Difusión del proyecto "Libros, Tinta y Murales"',fechaLimite:"",accion:"Difundir entre personal directivo y docente; orientar/acompañar creación de periódicos murales y rincones de lectura; remitir ficha técnica y evidencias fotográficas al correo tecnicoprimaria@correo.setab.gob.mx; promover análisis en CTE.",estado:"Pendiente",liga:"Envío mensual: día hábil de cada mes",notas:""},
+{oficio:"Circular SE/DEP/DATP/276/2026",fechaOficio:"2026-09-03",asunto:"Difusión de link para cuestionario digital sobre Libros de Texto Gratuito",fechaLimite:"",accion:"Difundir a todas las escuelas primarias el enlace electrónico para consultar información y atender necesidades de Libros de Texto Gratuito por incremento de matrícula 2026-2027.",estado:"Pendiente",liga:"https://docs.google.com/forms/d/e/1FAIpQLSf9vx2XN4w9ZmnSbVS_zMLmfvAzNlqmE_aLS_TJ-P-z-5nucw/viewform",notas:""},
+{oficio:"SE/SEB/DGEB/DEP/8811/2026",fechaOficio:"2026-09-04",asunto:"Capacitación a las Mesas Directivas de las Asociaciones de Padres de Familia",fechaLimite:"",accion:"Difundir y coordinar capacitación; garantizar entrega del Reglamento; requisitar Formato de Registro y Lista de Asistencia; resguardar en plantel; elaborar informe por zona en PDF y remitir por Sector a departamento.primaria@correo.setab.gob.mx.",estado:"Pendiente",liga:"No hay fecha específica para entregar el informe",notas:""}
+];
+
+/* ===================== CARGA / PERSISTENCIA ===================== */
+let asuntos = JSON.parse(localStorage.getItem(STORAGE_KEY));
+if (!asuntos || !Array.isArray(asuntos) || asuntos.length === 0) {
+    asuntos = datosIniciales.map((item, index) => ({ id: Date.now() + index, creado: Date.now() + index, ...item }));
+    guardarLocal();
+}
+function guardarLocal() { localStorage.setItem(STORAGE_KEY, JSON.stringify(asuntos)); }
+
+/* ===================== UTILIDADES DE FECHA ===================== */
+function fechaHoy() { const a = new Date(); a.setHours(0,0,0,0); return a; }
+function fechaLocal(valor) { if (!valor) return null; const p = valor.split("-"); return new Date(p[0], p[1]-1, p[2]); }
+function formatearFecha(valor) { if (!valor) return "Sin fecha"; return fechaLocal(valor).toLocaleDateString("es-MX",{day:"2-digit",month:"2-digit",year:"numeric"}); }
+function diasRestantes(valor) { if (!valor) return null; return Math.ceil((fechaLocal(valor).getTime() - fechaHoy().getTime()) / 86400000); }
+
+/* ===================== PRIORIDAD / CLASES ===================== */
+function calcularPrioridad(a) {
+    if (a.estado === "Concluido") return "Concluida";
+    if (!a.fechaLimite) return "Media";
+    const d = diasRestantes(a.fechaLimite);
+    if (d <= 0) return "Crítica";
+    if (d <= 3) return "Alta";
+    return "Media";
+}
+function textoTiempo(a) {
+    if (a.estado === "Concluido") return "✔ Concluido";
+    if (!a.fechaLimite) return "Sin fecha";
+    const d = diasRestantes(a.fechaLimite);
+    if (d < 0) return `⚠️ Vencido hace ${Math.abs(d)} día(s)`;
+    if (d === 0) return "🔴 Vence HOY";
+    if (d === 1) return "🟠 Vence mañana";
+    return `Faltan ${d} días`;
+}
+function clasePrioridad(p) { if (p==="Crítica") return "prioridad-critica"; if (p==="Alta") return "prioridad-alta"; if (p==="Media") return "prioridad-media"; return "prioridad-concluida"; }
+function claseFila(p) { if (p==="Crítica") return "fila-critica"; if (p==="Alta") return "fila-alta"; if (p==="Media") return "fila-media"; return "fila-concluida"; }
+function claseEstado(e) { if (e==="Concluido") return "estado-concluido"; if (e==="En proceso") return "estado-proceso"; return "estado-pendiente"; }
+function escapar(t) { if (t===null||t===undefined) return ""; return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"); }
+
+/* ===================== FORMULARIO ===================== */
+function mostrarFormulario() {
+    document.getElementById("formulario").classList.add("visible");
+    document.getElementById("tituloFormulario").textContent = "➕ Registrar nuevo asunto";
+    limpiarFormulario();
+    window.scrollTo({top:0, behavior:"smooth"});
+}
+function cancelarFormulario() { document.getElementById("formulario").classList.remove("visible"); limpiarFormulario(); }
+function limpiarFormulario() {
+    ["idEdicion","oficio","fechaOficio","fechaLimite","asunto","accion","liga","notas"].forEach(id => document.getElementById(id).value = "");
+    document.getElementById("estado").value = "Pendiente";
+}
+function guardarAsunto() {
+    const id = document.getElementById("idEdicion").value;
+    const oficio = document.getElementById("oficio").value.trim();
+    const fechaOficio = document.getElementById("fechaOficio").value;
+    const fechaLimite = document.getElementById("fechaLimite").value;
+    const asunto = document.getElementById("asunto").value.trim();
+    const accion = document.getElementById("accion").value.trim();
+    const liga = document.getElementById("liga").value.trim();
+    const notas = document.getElementById("notas").value.trim();
+    const estado = document.getElementById("estado").value;
+    if (!oficio || !asunto) { alert("Debe capturar por lo menos el Oficio/Circular y el Asunto."); return; }
+    const registro = { oficio, fechaOficio, fechaLimite, asunto, accion, estado, liga, notas };
+    if (id) {
+        const i = asuntos.findIndex(x => String(x.id) === String(id));
+        if (i !== -1) asuntos[i] = {...asuntos[i], ...registro};
+    } else {
+        asuntos.push({ id: Date.now(), creado: Date.now(), ...registro });
+    }
+    guardarLocal(); cancelarFormulario(); renderizar();
+}
+function editarAsunto(id) {
+    const a = asuntos.find(x => x.id === id);
+    if (!a) return;
+    document.getElementById("formulario").classList.add("visible");
+    document.getElementById("tituloFormulario").textContent = "✏️ Editar asunto";
+    document.getElementById("idEdicion").value = a.id;
+    document.getElementById("oficio").value = a.oficio;
+    document.getElementById("fechaOficio").value = a.fechaOficio || "";
+    document.getElementById("fechaLimite").value = a.fechaLimite || "";
+    document.getElementById("asunto").value = a.asunto;
+    document.getElementById("accion").value = a.accion || "";
+    document.getElementById("liga").value = a.liga || "";
+    document.getElementById("notas").value = a.notas || "";
+    document.getElementById("estado").value = a.estado;
+    window.scrollTo({top:0, behavior:"smooth"});
+}
+function cambiarEstado(id) {
+    const a = asuntos.find(x => x.id === id);
+    if (!a) return;
+    if (a.estado === "Pendiente") a.estado = "En proceso";
+    else if (a.estado === "En proceso") a.estado = "Concluido";
+    else a.estado = "Pendiente";
+    guardarLocal(); renderizar();
+}
+function eliminarAsunto(id) {
+    const a = asuntos.find(x => x.id === id);
+    if (!a) return;
+    mostrarModal(`¿Desea eliminar el asunto "${a.oficio}"?`, () => {
+        asuntos = asuntos.filter(x => x.id !== id);
+        guardarLocal(); renderizar(); cerrarModal();
+    });
+}
+
+/* ===================== MODALES ===================== */
+function mostrarModal(mensaje, accion) {
+    document.getElementById("mensajeModal").textContent = mensaje;
+    document.getElementById("confirmarModal").onclick = accion;
+    document.getElementById("modal").classList.add("visible");
+}
+function cerrarModal() { document.getElementById("modal").classList.remove("visible"); }
+function confirmarBorradoTotal() {
+    if (asuntos.length === 0) { alert("No hay asuntos registrados."); return; }
+    mostrarModal("¿Está seguro de eliminar TODOS los asuntos registrados? Esta acción no se puede deshacer.", () => {
+        asuntos = []; guardarLocal(); renderizar(); cerrarModal();
+    });
+}
+
+/* ===================== RENDERIZADO ===================== */
+function renderizar() {
+    const cuerpo = document.getElementById("cuerpoTabla");
+    const busqueda = document.getElementById("busqueda").value.toLowerCase().trim();
+    const filtroPrioridad = document.getElementById("filtroPrioridad").value;
+    const filtroEstado = document.getElementById("filtroEstado").value;
+    const orden = document.getElementById("orden").value;
+
+    let filtrados = asuntos.filter(asunto => {
+        const texto = (asunto.oficio + " " + asunto.asunto + " " + (asunto.accion||"") + " " + (asunto.liga||"") + " " + (asunto.notas||"")).toLowerCase();
+        if (busqueda && !texto.includes(busqueda)) return false;
+        const p = calcularPrioridad(asunto);
+        if (filtroPrioridad !== "Todas" && p !== filtroPrioridad) return false;
+        if (filtroEstado !== "Todos" && asunto.estado !== filtroEstado) return false;
+        return true;
+    });
+
+    filtrados.sort((a,b) => {
+        const pa = calcularPrioridad(a), pb = calcularPrioridad(b);
+        if (orden === "oficio") return a.oficio.localeCompare(b.oficio);
+        if (orden === "fecha") {
+            if (!a.fechaLimite) return 1;
+            if (!b.fechaLimite) return -1;
+            return a.fechaLimite.localeCompare(b.fechaLimite);
+        }
+        if (orden === "nuevo") return b.creado - a.creado;
+        const map = {"Crítica":1,"Alta":2,"Media":3,"Concluida":4};
+        const d = map[pa] - map[pb];
+        if (d !== 0) return d;
+        if (!a.fechaLimite) return 1;
+        if (!b.fechaLimite) return -1;
+        return a.fechaLimite.localeCompare(b.fechaLimite);
+    });
+
+    cuerpo.innerHTML = "";
+    if (filtrados.length === 0) {
+        cuerpo.innerHTML = `<tr><td colspan="9" class="vacio">🔎 No se encontraron asuntos con los filtros seleccionados.</td></tr>`;
+        actualizarDashboard();
+        return;
+    }
+
+    filtrados.forEach(asunto => {
+        const prioridad = calcularPrioridad(asunto);
+        const tr = document.createElement("tr");
+        tr.className = claseFila(prioridad);
+        let fechaClase = "fecha-normal";
+        if (asunto.estado !== "Concluido" && asunto.fechaLimite) {
+            const d = diasRestantes(asunto.fechaLimite);
+            if (d < 0) fechaClase = "fecha-vencida";
+            else if (d === 0) fechaClase = "fecha-hoy";
+        }
+        tr.innerHTML = `
+            <td><span class="prioridad ${clasePrioridad(prioridad)}">${
+                prioridad === "Crítica" ? "🔴 Crítica" :
+                prioridad === "Alta" ? "🟠 Alta" :
+                prioridad === "Media" ? "🟡 Media" : "🟢 Concluida"
+            }</span></td>
+            <td class="oficio">${escapar(asunto.oficio)}</td>
+            <td>${formatearFecha(asunto.fechaOficio)}</td>
+            <td><strong>${escapar(asunto.asunto)}</strong>${
+                asunto.liga ? `<div style="margin-top:5px;font-size:11px;color:#64748b;word-break:break-all;">${escapar(asunto.liga)}</div>` : ""
+            }</td>
+            <td class="${fechaClase}">${formatearFecha(asunto.fechaLimite)}</td>
+            <td class="${fechaClase}">${textoTiempo(asunto)}</td>
+            <td>
+                ${escapar(asunto.accion || "Sin acción registrada.")}
+                ${asunto.notas ? `<div style="margin-top:6px;font-size:11px;color:#64748b;font-style:italic;border-top:1px dashed #cbd5e1;padding-top:4px;">📝 ${escapar(asunto.notas)}</div>` : ""}
+            </td>
+            <td><span class="estado ${claseEstado(asunto.estado)}">${
+                asunto.estado === "Concluido" ? "🟢 Concluido" :
+                asunto.estado === "En proceso" ? "🟡 En proceso" : "🔴 Pendiente"
+            }</span></td>
+            <td><div class="acciones">
+                <button class="btn-editar" onclick="editarAsunto(${asunto.id})">✏️ Editar</button>
+                <button class="btn-concluir" onclick="cambiarEstado(${asunto.id})">🔄 Estado</button>
+                <button class="btn-eliminar" onclick="eliminarAsunto(${asunto.id})">🗑️</button>
+            </div></td>
+        `;
+        cuerpo.appendChild(tr);
+    });
+    actualizarDashboard();
+}
+
+function actualizarDashboard() {
+    let c=0,a=0,m=0,co=0;
+    asuntos.forEach(x => {
+        const p = calcularPrioridad(x);
+        if (p === "Crítica") c++;
+        else if (p === "Alta") a++;
+        else if (p === "Media") m++;
+        else co++;
+    });
+    document.getElementById("total").textContent = asuntos.length;
+    document.getElementById("criticas").textContent = c;
+    document.getElementById("altas").textContent = a;
+    document.getElementById("medias").textContent = m;
+    document.getElementById("concluidos").textContent = co;
+}
+
+/* ===================== EXPORTAR ===================== */
+function limpiarCSV(v){ return String(v||"").replace(/\t/g," ").replace(/\r?\n/g," "); }
+function descargarBlob(blob, nombre) {
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = nombre;
+    document.body.appendChild(a); a.click(); a.remove();
+    URL.revokeObjectURL(url);
+}
+function exportarExcel() {
+    let csv = "PRIORIDAD\tOFICIO / CIRCULAR\tFECHA DEL OFICIO\tASUNTO / ACTIVIDAD\tFECHA LÍMITE\tTIEMPO\tACCIÓN A REALIZAR\tNOTAS\tESTADO\n";
+    const copia = [...asuntos];
+    copia.sort((a,b) => {
+        const map = {"Crítica":1,"Alta":2,"Media":3,"Concluida":4};
+        const pa = map[calcularPrioridad(a)], pb = map[calcularPrioridad(b)];
+        if (pa !== pb) return pa - pb;
+        return (a.fechaLimite || "9999").localeCompare(b.fechaLimite || "9999");
+    });
+    copia.forEach(x => {
+        csv += [calcularPrioridad(x), x.oficio, formatearFecha(x.fechaOficio), x.asunto, formatearFecha(x.fechaLimite), textoTiempo(x), x.accion, x.notas||"", x.estado].map(limpiarCSV).join("\t") + "\n";
+    });
+    descargarBlob(new Blob(["\ufeff" + csv], {type:"application/vnd.ms-excel;charset=utf-8;"}), "Agenda_Asuntos_2026_2027.xls");
+}
+function descargarWord() {
+    const tabla = document.getElementById("tablaAgenda").outerHTML;
+    const html = `<html><head><meta charset="UTF-8"><style>@page{size:landscape;margin:1cm;}body{font-family:Calibri,Arial;font-size:9pt;}h1{text-align:center;color:#1F4E79;}table{border-collapse:collapse;width:100%;}th{background:#1F4E79;color:white;padding:6px;}td{border:1px solid #ccc;padding:5px;vertical-align:top;}button{display:none;}</style></head><body><h1>Agenda de Asuntos Pendientes 2026-2027</h1>${tabla}</body></html>`;
+    descargarBlob(new Blob(["\ufeff", html], {type:"application/msword"}), "Agenda_Asuntos_2026_2027.doc");
+}
+
+/* ===================== PDF + OCR ===================== */
+let pdfTextoTemporal = "";
+let pdfModulePromise = null;
+let tesseractPromise = null;
+
+function cargarPDFJS() {
+    if (!pdfModulePromise) {
+        pdfModulePromise = import("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs")
+            .then(mod => {
+                if (mod && mod.GlobalWorkerOptions) {
+                    mod.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
+                }
+                return mod;
+            });
+    }
+    return pdfModulePromise;
+}
+function cargarTesseract() {
+    if (!tesseractPromise) {
+        tesseractPromise = import("https://cdn.jsdelivr.net/npm/tesseract.js@5.1.0/dist/tesseract.esm.min.js");
+    }
+    return tesseractPromise;
+}
+
+function abrirImportadorPDF() {
+    const modal = document.getElementById("modalPDF");
+    modal.classList.add("visible");
+    modal.setAttribute("aria-hidden", "false");
+    document.getElementById("archivoPDF").value = "";
+    document.getElementById("pdfStatus").textContent = "Seleccione una circular u oficio en PDF.";
+    document.getElementById("pdfPreviewWrap").style.display = "none";
+    document.getElementById("pdfCampos").style.display = "none";
+    document.getElementById("pdfBotones").style.display = "none";
+    document.getElementById("pdfAlertas").innerHTML = "";
+    pdfTextoTemporal = "";
+}
+function cerrarImportadorPDF() {
+    const modal = document.getElementById("modalPDF");
+    modal.classList.remove("visible");
+    modal.setAttribute("aria-hidden", "true");
+    document.getElementById("archivoPDF").value = "";
+    document.getElementById("pdfPreview").textContent = "";
+    document.getElementById("pdfPreviewWrap").style.display = "none";
+    document.getElementById("pdfCampos").style.display = "none";
+    document.getElementById("pdfBotones").style.display = "none";
+    document.getElementById("pdfAlertas").innerHTML = "";
+    pdfTextoTemporal = "";
+}
+
+const MESES_PDF = { enero:1,febrero:2,marzo:3,abril:4,mayo:5,junio:6,julio:7,agosto:8,septiembre:9,setiembre:9,octubre:10,noviembre:11,diciembre:12 };
+function sinAcentosPDF(v){ return String(v||"").normalize("NFD").replace(/[\u0300-\u036f]/g,""); }
+function normalizarLineaPDF(linea){
+    return String(linea||"")
+        .replace(/[\u00ad\u200b\ufeff]/g,"").replace(/[|¦]+/g," ").replace(/\s+/g," ")
+        .replace(/^[^A-Za-zÁÉÍÓÚÜÑ0-9¿¡]+|[^A-Za-zÁÉÍÓÚÜÑ0-9.,;:()/#°ºª¿¡-]+$/g,"").trim();
+}
+function lineaBasuraPDF(linea){
+    const x = normalizarLineaPDF(linea);
+    if (!x || x.length < 3) return true;
+    if (/^[^A-Za-zÁÉÍÓÚÜÑ]{0,4}$/.test(x)) return true;
+    const letras = (x.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g)||[]).length;
+    const simbolos = (x.match(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9\s.,;:()/#°ºª¿¡-]/g)||[]).length;
+    if (letras < 2) return true;
+    if (simbolos > letras * 0.45) return true;
+    if (/^(page|p[aá]gina)\s*\d+(\s*(of|de)\s*\d+)?$/i.test(x)) return true;
+    if (/^[\d\s._-]+$/.test(x)) return true;
+    return false;
+}
+function eliminarRepetidosPDF(lineas){
+    const contador = new Map();
+    lineas.forEach(l => {
+        const clave = sinAcentosPDF(l).toLowerCase().trim();
+        if (!clave) return;
+        contador.set(clave, (contador.get(clave)||0) + 1);
+    });
+    const total = lineas.length;
+    return lineas.filter(l => {
+        const clave = sinAcentosPDF(l).toLowerCase().trim();
+        const c = contador.get(clave) || 0;
+        if (c >= 3 && clave.length < 90 && total >= 12) return false;
+        return true;
+    });
+}
+function limpiarTextoReconocidoPDF(texto){
+    let raw = String(texto||"").replace(/\r/g,"").replace(/[\u00ad\u200b\ufeff]/g,"");
+    raw = raw.replace(/[ \t]+/g," ");
+    let lineas = raw.split("\n").map(normalizarLineaPDF).filter(l => !lineaBasuraPDF(l));
+    lineas = eliminarRepetidosPDF(lineas);
+    const salida = [];
+    for (let i = 0; i < lineas.length; i++) {
+        let l = lineas[i];
+        if (/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]{1,3}$/.test(l) && salida.length) {
+            const sig = lineas[i+1]||"";
+            if (sig && /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/.test(sig)) { l += " " + sig; i++; }
+        }
+        if (salida.length) {
+            const prev = salida[salida.length-1];
+            const prevTermina = /[.:;!?)]$/.test(prev);
+            const currIniciaMin = /^[a-záéíóúüñ]/.test(l);
+            const prevEsCorta = prev.length < 90;
+            if (!prevTermina && currIniciaMin && prevEsCorta && l.length > 5) { salida[salida.length-1] = prev + " " + l; continue; }
+        }
+        if (salida.length && sinAcentosPDF(salida[salida.length-1]).toLowerCase() === sinAcentosPDF(l).toLowerCase()) continue;
+        salida.push(l);
+    }
+    return salida.join("\n").replace(/\n{3,}/g,"\n\n").trim();
+}
+function lineasPDF(texto){ return String(texto||"").split("\n").map(normalizarLineaPDF).filter(x => !lineaBasuraPDF(x)); }
+function limpiarFrasePDF(v){ return String(v||"").replace(/\s+/g," ").replace(/^[-:;,.\s]+|[-:;,.\s]+$/g,"").trim(); }
+
+function fechaISODesdeTextoPDF(texto){
+    const t = String(texto||"");
+    let m = t.match(/\b(\d{1,2})[\/-](\d{1,2})[\/-](20\d{2})\b/);
+    if (m) return `${m[3]}-${String(m[2]).padStart(2,"0")}-${String(m[1]).padStart(2,"0")}`;
+    m = t.match(/\b(\d{1,2})\s+de\s+([a-záéíóú]+)\s+(?:de\s+)?(20\d{2})\b/i);
+    if (!m) m = t.match(/\b(\d{1,2})\s+([a-záéíóú]+)\s+(20\d{2})\b/i);
+    if (m) {
+        const mes = MESES_PDF[sinAcentosPDF(m[2]).toLowerCase()];
+        if (mes) return `${m[3]}-${String(mes).padStart(2,"0")}-${String(m[1]).padStart(2,"0")}`;
+    }
+    return "";
+}
+
+function extraerOficioPDF(texto){
+    const limpio = String(texto||"").replace(/\s+/g," ");
+    const patrones = [
+        /\b((?:OFICIO|CIRCULAR)\s*(?:NO\.?|NÚM\.?|NUM\.?|NÚMERO)?\s*[A-ZÁÉÍÓÚ0-9][A-ZÁÉÍÓÚ0-9./_-]{4,})\b/i,
+        /\b((?:SE|DEP|FIZ)(?:\/[A-Z0-9ÁÉÍÓÚ/_-]+){1,4}\/\d{2,}\/20\d{2})\b/i,
+        /\b(CIRCULAR\s+[A-Z0-9ÁÉÍÓÚ/_-]+\/\d{2,}\/20\d{2})\b/i
+    ];
+    for (const p of patrones) { const m = limpio.match(p); if (m) return m[1].replace(/\s+/g," ").trim(); }
+    if (/\b(?:oficio|circular)\s*(?:sin\s+n[uú]mero|s\/n)\b/i.test(limpio)) return "S/N (sin número)";
+    if (/\b(?:sin\s+n[uú]mero|s\/n)\b/i.test(limpio) && /\b(?:oficio|circular)\b/i.test(limpio)) return "S/N (sin número)";
+    return "";
+}
+
+function extraerFechaOficioPDF(texto){
+    const ls = lineasPDF(texto);
+    for (let i = 0; i < ls.length; i++) {
+        if (/\bfecha\s*(del\s+oficio)?\b/i.test(ls[i])) {
+            const f = fechaISODesdeTextoPDF(ls[i]);
+            if (f) return f;
+            if (ls[i+1]) { const f2 = fechaISODesdeTextoPDF(ls[i+1]); if (f2) return f2; }
+        }
+    }
+    for (let i = 0; i < ls.length; i++) {
+        if (/\b(villahermosa|jalapa|tenosique|c[aá]rdenas|centla|comalcalco|macuspana|balanc[aá]n|tabasco)\b/i.test(ls[i])) {
+            const f = fechaISODesdeTextoPDF(ls[i]);
+            if (f) return f;
+        }
+    }
+    const idx = ls.findIndex(x => /\b(oficio|circular)\b/i.test(x));
+    const ventana = idx >= 0 ? ls.slice(Math.max(0, idx - 3), Math.min(ls.length, idx + 15)).join(" ") : texto;
+    return fechaISODesdeTextoPDF(ventana);
+}
+
+function extraerFechaLimitePDF(texto){
+    const t = String(texto||"").replace(/\n/g," ");
+    const patrones = [
+        /(?:fecha\s+l[ií]mite|fecha\s+de\s+entrega|plazo|a\s+m[aá]s\s+tardar|hasta\s+el|antes\s+del|antes\s+de|se\s+recibir[aá]\s+hasta|deber[aá]n?\s+.{0,40}(?:enviar|remitir|entregar|informar))\D{0,140}?(\d{1,2}\s+de\s+[a-záéíóú]+\s+(?:de\s+)?20\d{2})/i,
+        /(?:fecha\s+l[ií]mite|fecha\s+de\s+entrega|plazo|a\s+m[aá]s\s+tardar|hasta\s+el|antes\s+del|antes\s+de|se\s+recibir[aá]\s+hasta)\D{0,140}?(\d{1,2}[\/-]\d{1,2}[\/-]20\d{2})/i
+    ];
+    for (const p of patrones) {
+        const m = t.match(p);
+        if (m) { const f = fechaISODesdeTextoPDF(m[1]); if (f) return f; }
+    }
+    const periodo = t.match(/\bdel\s+\d{1,2}\s+de\s+[a-záéíóú]+\s+(?:al|hasta\s+el)\s+(\d{1,2}\s+de\s+[a-záéíóú]+\s+(?:de\s+)?20\d{2})/i);
+    if (periodo) { const f = fechaISODesdeTextoPDF(periodo[1]); if (f) return f; }
+    return "";
+}
+
+function extraerAsuntoPDF(texto){
+    const ls = lineasPDF(texto);
+    for (let i = 0; i < ls.length; i++) {
+        const m = ls[i].match(/^asunto\s*[:：-]?\s*(.*)$/i);
+        if (m) {
+            let a = m[1].trim();
+            if (!a && ls[i+1]) a = ls[i+1];
+            else if (ls[i+1] && !/^(cc\.?|presentes|referente|oficio|circular|fecha|para|de|atentamente)\b/i.test(ls[i+1])) {
+                if (!/[.:;!?]$/.test(a) || /^[a-záéíóúüñ]/.test(ls[i+1])) a += " " + ls[i+1];
+            }
+            return limpiarFrasePDF(a);
+        }
+    }
+    const idx = ls.findIndex(x => /\b(oficio|circular)\b/i.test(x));
+    if (idx >= 0) {
+        for (let j = idx+1; j < Math.min(idx+8, ls.length); j++) {
+            if (ls[j].length >= 8 && ls[j].length <= 180 && !/^(cc\.?|presentes|para|de|fecha|asunto)\b/i.test(ls[j])) {
+                return limpiarFrasePDF(ls[j]);
+            }
+        }
+    }
+    return "";
+}
+
+function extraerAccionPDF(texto){
+    const ls = lineasPDF(texto);
+    const claves = /^(?:se\s+solicita(?:\s+atentamente)?|se\s+instruye(?:\s+a)?|deber[aá]n?|debe(?:r)?|favor\s+de|se\s+requiere|remitir|enviar|realizar|dar\s+seguimiento|difundir|atender|registrar|informar|participar|acudir|capturar|actualizar|verificar|entregar|reportar|llenar|contestar|cumplir|notificar|hacer\s+llegar|presentar)\b/i;
+    const candidatas = [];
+    for (let i = 0; i < ls.length; i++) {
+        if (claves.test(ls[i]) && ls[i].length > 25) {
+            let frase = ls[i];
+            if (frase.length < 90 && ls[i+1] && !/^(cc\.?|presentes|atentamente|firma)\b/i.test(ls[i+1])) frase += " " + ls[i+1];
+            candidatas.push(limpiarFrasePDF(frase));
+        }
+    }
+    const idx = ls.findIndex(x => /^(acción|acciones|actividad|actividades|indicaciones|instrucciones)\s*[:：-]?$/i.test(x));
+    if (idx >= 0) {
+        const bloque = [];
+        for (let j = idx+1; j < Math.min(idx+6, ls.length); j++) {
+            if (/^(cc\.?|presentes|atentamente|firma)\b/i.test(ls[j])) break;
+            bloque.push(ls[j]);
+        }
+        if (bloque.join(" ").length > 20) return limpiarFrasePDF(bloque.join(" "));
+    }
+    return [...new Set(candidatas)].slice(0,3).join(" ");
+}
+
+function construirTextoLimpioPDF(paginas){ return limpiarTextoReconocidoPDF(paginas.join("\n")); }
+
+async function extraerTextoPaginaPDF(page){
+    const content = await page.getTextContent();
+    const items = content.items || [];
+    const filas = [];
+    for (const item of items) {
+        const str = String(item.str||"").trim();
+        if (!str) continue;
+        const y = item.transform ? Math.round(item.transform[5]/2)*2 : 0;
+        let fila = filas.find(f => Math.abs(f.y - y) <= 3);
+        if (!fila) { fila = {y, items:[]}; filas.push(fila); }
+        fila.items.push(item);
+    }
+    filas.sort((a,b) => b.y - a.y);
+    return filas.map(f =>
+        f.items.sort((a,b) => (a.transform?.[4]||0) - (b.transform?.[4]||0)).map(x => x.str||"").join(" ")
+    ).join("\n");
+}
+
+async function ocrPaginaPDF(page, onProgress){
+    const viewport = page.getViewport({ scale: 2.0 });
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.floor(viewport.width);
+    canvas.height = Math.floor(viewport.height);
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    await page.render({ canvasContext: ctx, viewport }).promise;
+
+    const tesseract = await cargarTesseract();
+    const createWorker = tesseract.createWorker || (tesseract.default && tesseract.default.createWorker);
+    if (!createWorker) throw new Error("No se pudo inicializar el motor OCR.");
+
+    const worker = await createWorker("spa", 1, {
+        logger: (m) => {
+            if (onProgress && m && m.status === "recognizing text") {
+                onProgress(Math.round((m.progress || 0) * 100));
+            }
+        }
+    });
+    try {
+        const result = await worker.recognize(canvas);
+        return (result && result.data && result.data.text) ? result.data.text : "";
+    } finally {
+        try { await worker.terminate(); } catch(_) {}
+    }
+}
+
+function calcularConfianzaExtraccion(campos){
+    const conf = { oficio:0, fechaOficio:0, fechaLimite:0, asunto:0, accion:0 };
+    if (campos.oficio) conf.oficio = /\d{2,}\/20\d{2}/.test(campos.oficio) ? 95 : 75;
+    if (campos.fechaOficio) { const y = parseInt(campos.fechaOficio.slice(0,4),10); conf.fechaOficio = (y>=2024 && y<=2100) ? 88 : 55; }
+    if (campos.fechaLimite) { const y = parseInt(campos.fechaLimite.slice(0,4),10); conf.fechaLimite = (y>=2024 && y<=2100) ? 82 : 55; }
+    if (campos.asunto) { conf.asunto = campos.asuntoExplicito ? 98 : 70; if (campos.asunto.length < 6) conf.asunto -= 20; }
+    if (campos.accion) conf.accion = campos.accion.length > 25 ? 85 : 65;
+    return conf;
+}
+function claseConfianza(pct){ if (pct>=85) return "conf-alta"; if (pct>=65) return "conf-media"; if (pct>0) return "conf-baja"; return "conf-na"; }
+function pintarConfianza(id, pct){
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (!pct || pct <= 0) { el.textContent = "—"; el.className = "conf-badge conf-na"; return; }
+    el.textContent = pct + "%";
+    el.className = "conf-badge " + claseConfianza(pct);
+}
+
+async function procesarPDF(file){
+    if (!file) return;
+    const status = document.getElementById("pdfStatus");
+    const alertas = document.getElementById("pdfAlertas");
+    alertas.innerHTML = "";
+    status.textContent = "Leyendo y limpiando texto reconocido…";
+    document.getElementById("pdfCampos").style.display = "none";
+    document.getElementById("pdfBotones").style.display = "none";
+    document.getElementById("pdfPreviewWrap").style.display = "none";
+
+    try {
+        if (file.type !== "application/pdf" && !/\.pdf$/i.test(file.name)) throw new Error("Seleccione un archivo PDF válido.");
+        const buffer = await file.arrayBuffer();
+        const pdfjs = await cargarPDFJS();
+        const pdf = await pdfjs.getDocument({ data: buffer }).promise;
+
+        const paginasTexto = [];
+        let totalChars = 0;
+        for (let p = 1; p <= pdf.numPages; p++) {
+            status.textContent = `Extrayendo texto… página ${p} de ${pdf.numPages}`;
+            const page = await pdf.getPage(p);
+            const textoPagina = await extraerTextoPaginaPDF(page);
+            paginasTexto.push(textoPagina);
+            totalChars += (textoPagina.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9]/g)||[]).length;
+        }
+
+        let texto;
+        const umbralMinimo = 120 * pdf.numPages;
+
+        if (totalChars < umbralMinimo) {
+            status.textContent = "Texto insuficiente. Aplicando OCR en español…";
+            const paginasOCR = [];
+            for (let p = 1; p <= pdf.numPages; p++) {
+                status.textContent = `Aplicando OCR (spa)… página ${p} de ${pdf.numPages} — iniciando…`;
+                const page = await pdf.getPage(p);
+                const t = await ocrPaginaPDF(page, (pct) => {
+                    status.textContent = `Aplicando OCR (spa)… página ${p} de ${pdf.numPages} — ${pct}%`;
+                });
+                paginasOCR.push(t);
+            }
+            texto = construirTextoLimpioPDF(paginasOCR);
+            if (texto.replace(/\s/g,"").length < 40) throw new Error("No se pudo obtener texto legible del PDF ni mediante OCR. Verifique la calidad del documento.");
+            alertas.innerHTML = `<div class="pdf-alerta">📷 Documento procesado mediante OCR. Revise cuidadosamente los datos extraídos antes de guardar.</div>`;
+        } else {
+            texto = construirTextoLimpioPDF(paginasTexto);
+        }
+
+        pdfTextoTemporal = texto;
+        document.getElementById("pdfPreview").textContent = texto.slice(0, 7000);
+        document.getElementById("pdfPreviewWrap").style.display = "block";
+
+        const oficio = extraerOficioPDF(texto);
+        const fechaOficio = extraerFechaOficioPDF(texto);
+        const fechaLimite = extraerFechaLimitePDF(texto);
+        const asunto = extraerAsuntoPDF(texto);
+        const accion = extraerAccionPDF(texto);
+        const asuntoExplicito = /\basunto\s*[:：]/i.test(texto);
+
+        const conf = calcularConfianzaExtraccion({ oficio, fechaOficio, fechaLimite, asunto, accion, asuntoExplicito });
+
+        document.getElementById("pdfOficio").value = oficio;
+        document.getElementById("pdfOficio").placeholder = oficio ? "" : "Ej. S/N (sin número)";
+        document.getElementById("pdfFechaOficio").value = fechaOficio;
+        document.getElementById("pdfFechaLimite").value = fechaLimite;
+        document.getElementById("pdfAsunto").value = asunto;
+        document.getElementById("pdfAccion").value = accion;
+        document.getElementById("pdfEstado").value = "Pendiente";
+        document.getElementById("pdfLiga").value = "";
+        document.getElementById("pdfNotas").value = "";
+
+        pintarConfianza("confOficio", conf.oficio);
+        pintarConfianza("confFechaOficio", conf.fechaOficio);
+        pintarConfianza("confFechaLimite", conf.fechaLimite);
+        pintarConfianza("confAsunto", conf.asunto);
+        pintarConfianza("confAccion", conf.accion);
+
+        const faltantes = [];
+        if (!oficio) faltantes.push("Oficio / Circular (puede escribir 'S/N' si el documento no tiene número)");
+        if (!fechaOficio) faltantes.push("Fecha del oficio");
+        if (!fechaLimite) faltantes.push("Fecha límite");
+        if (!asunto) faltantes.push("Asunto / Actividad");
+        if (!accion) faltantes.push("Acción a realizar");
+
+        if (faltantes.length) {
+            alertas.innerHTML += `<div class="pdf-alerta">⚠️ No fue posible identificar automáticamente: <strong>${faltantes.join(", ")}</strong>. Puede capturarlos manualmente antes de guardar.</div>`;
+        }
+
+        document.getElementById("pdfCampos").style.display = "grid";
+        document.getElementById("pdfBotones").style.display = "grid";
+
+        const encontrados = [oficio, fechaOficio, fechaLimite, asunto, accion].filter(Boolean).length;
+        status.textContent = `✓ ${pdf.numPages} página(s) procesada(s). ${encontrados}/5 datos detectados automáticamente.`;
+
+    } catch (error) {
+        console.error(error);
+        status.textContent = "⚠️ " + (error.message || "No fue posible procesar el PDF.");
+        alertas.innerHTML = `<div class="pdf-alerta">${escapar(error.message || "Error al procesar el PDF.")}</div>`;
+        document.getElementById("pdfCampos").style.display = "none";
+        document.getElementById("pdfBotones").style.display = "none";
+        pdfTextoTemporal = "";
+    }
+}
+
+function guardarCircularPDF(){
+    const oficio = document.getElementById("pdfOficio").value.trim();
+    const fechaOficio = document.getElementById("pdfFechaOficio").value;
+    const fechaLimite = document.getElementById("pdfFechaLimite").value;
+    const asunto = document.getElementById("pdfAsunto").value.trim();
+    const accion = document.getElementById("pdfAccion").value.trim();
+    const estado = document.getElementById("pdfEstado").value;
+    const liga = document.getElementById("pdfLiga").value.trim();
+    const notas = document.getElementById("pdfNotas").value.trim();
+    if (!oficio || !asunto) { alert("La extracción debe contener al menos Oficio/Circular y Asunto."); return; }
+    asuntos.push({ id: Date.now(), creado: Date.now(), oficio, fechaOficio, fechaLimite, asunto, accion, estado, liga, notas });
+    guardarLocal(); cerrarImportadorPDF(); renderizar();
+    alert("Circular agregada correctamente a la AgendaGPT Mobile.");
+}
+
+/* ===================== PWA ===================== */
+window.addEventListener("beforeinstallprompt", event => { event.preventDefault(); window._pwaInstallEvent = event; });
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(err => console.warn("SW:", err)));
+}
+
+/* ===================== INICIO ===================== */
+renderizar();
+setInterval(renderizar, 60000);
+</script>
+</body>
+</html>
