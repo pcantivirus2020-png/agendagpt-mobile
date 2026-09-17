@@ -188,7 +188,7 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
     .toast { font-size: 13px; padding: 12px 20px; }
 }
 </style>
-<link type="text/css" rel="stylesheet" href="chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/css/mcafee_fonts.css"></head>
+<link type="text/css" rel="stylesheet" href="chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/css/mcafee_fonts.css"><link type="text/css" rel="stylesheet" href="chrome-extension://fheoggkfdfchfphceeifdbepaooicaho/css/mcafee_fonts.css"></head>
 <body>
 
 <div class="contenedor">
@@ -198,10 +198,10 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
     </div>
 
     <div class="dashboard">
-        <div class="tarjeta tarjeta-total"><span class="numero" id="total">20</span><span class="texto">TOTAL DE ASUNTOS</span></div>
+        <div class="tarjeta tarjeta-total"><span class="numero" id="total">21</span><span class="texto">TOTAL DE ASUNTOS</span></div>
         <div class="tarjeta tarjeta-critica"><span class="numero" id="criticas">0</span><span class="texto">🔴 CRÍTICOS</span></div>
         <div class="tarjeta tarjeta-alta"><span class="numero" id="altas">4</span><span class="texto">🟠 ALTOS</span></div>
-        <div class="tarjeta tarjeta-media"><span class="numero" id="medias">13</span><span class="texto">🟡 MEDIOS</span></div>
+        <div class="tarjeta tarjeta-media"><span class="numero" id="medias">14</span><span class="texto">🟡 MEDIOS</span></div>
         <div class="tarjeta tarjeta-concluida"><span class="numero" id="concluidos">3</span><span class="texto">🟢 CONCLUIDOS</span></div>
     </div>
 
@@ -397,7 +397,7 @@ body { padding:10px; background:linear-gradient(135deg,#eef2f7,#dfe7f1); }
         <div style="background:#f5f8fc;border:1px solid #dce5ef;border-radius:12px;padding:14px;margin-bottom:12px;">
             <div style="font-weight:800;color:#1F4E79;margin-bottom:6px;">📤 Crear respaldo</div>
             <div style="font-size:12px;color:#64748b;margin-bottom:10px;">
-                Se descargará un archivo <strong>AgendaGPT_Respaldo_FECHA.json</strong> con los <span id="respaldoCount">20</span> asuntos actuales.
+                Se descargará un archivo <strong>AgendaGPT_Respaldo_FECHA.json</strong> con los <span id="respaldoCount">21</span> asuntos actuales.
             </div>
             <button class="btn-principal" onclick="descargarRespaldo()">💾 Descargar respaldo</button>
         </div>
@@ -459,7 +459,8 @@ const datosIniciales = [
 {oficio:"FIZ66/401/2026",fechaOficio:"2026-09-11",asunto:"Recepción de Plantillas de personal 3er trimestre de 2026 (julio-septiembre)",fechaLimite:"2026-09-24",accion:"Entregar en la Oficina de Supervisión Escolar el 24 de septiembre de 2026, de 11:00 a 13:00 horas, 3 tantos originales de la plantilla actualizada, 1 tanto del sustento documental cuando corresponda y el archivo electrónico en PDF firmado y sellado. Verificar y actualizar los datos académicos, laborales y horario del personal, así como conservar un tanto original adicional en el centro de trabajo.",estado:"Pendiente",liga:"",notas:"Se anexa Circular Núm. SE/DEP/DCP/326/2026"},
 {oficio:"SE/DEP/DATP/281/2026",fechaOficio:"2026-09-10",asunto:"Control y seguimiento de externos en escuelas primarias.",fechaLimite:"",accion:"Garantizar que los estudiantes externos que realicen prácticas profesionales, servicio social u observaciones en escuelas primarias públicas cuenten previamente con la autorización de la Dirección de Educación Primaria; la institución de procedencia deberá presentar oficio formal a la Unidad de Vinculación y, una vez autorizada la solicitud, dar seguimiento mediante la Jefatura de Sector, Supervisión Escolar y Dirección del plantel.",estado:"Pendiente",liga:"",notas:""},
 {oficio:"SE/DEP/DATP/292/2026",fechaOficio:"2026-09-11",asunto:"Reporte de Avance de Ejercicios Integradores del Aprendizaje 2026-2027 (Valorar la aplicación de este instrumento)",fechaLimite:"2026-09-30",accion:"Remitir el reporte numérico del avance de los EIA en las escuelas de la muestra estatal y nacional, especificando las escuelas que han cumplido las fases de Aplicación, Evaluación, Carga en SiRVER y Recepción de resultados. Realizar los reportes mediante el formulario electrónico en las fechas: 14 y 30 de septiembre y 16 de octubre de 2026.",estado:"Pendiente",liga:"https://forms.gle/uyf4zBtbM2qVkZ9n8",notas:"Realizar los reportes mediante el formulario electrónico en las fechas: 14 y 30 de septiembre y 16 de octubre de 2026."},
-{oficio:"SE/DEP/DATP/283/2026",fechaOficio:"2026-09-09",asunto:"Propuesta de personal docente para participar en curso en línea.",fechaLimite:"",accion:"Seleccionar y proponer al personal docente para las 30 becas asignadas al curso \"Inclusión educativa de niñas, niños y adolescentes en situación de movilidad\", utilizando el formato de registro en Excel y remitir la relación correspondiente al correo tecnicoprimaria@correo.setab.gob.mx a más tardar el 16 de septiembre de 2026. La distribución indicada contempla Sectores 1 al 23 con 1 docente, Sector 11 con 3 docentes y Sector 16 con 4 docentes.",estado:"Pendiente",liga:"",notas:"\"En seguimiento al Oficio Unido No. SE/SEB/DGEB/750/2026, de fecha 04 de\nseptiembre de 2026, emitido por la Dirección General de Educación Básica\""}
+{oficio:"SE/DEP/DATP/283/2026",fechaOficio:"2026-09-09",asunto:"Propuesta de personal docente para participar en curso en línea.",fechaLimite:"",accion:"Seleccionar y proponer al personal docente para las 30 becas asignadas al curso \"Inclusión educativa de niñas, niños y adolescentes en situación de movilidad\", utilizando el formato de registro en Excel y remitir la relación correspondiente al correo tecnicoprimaria@correo.setab.gob.mx a más tardar el 16 de septiembre de 2026. La distribución indicada contempla Sectores 1 al 23 con 1 docente, Sector 11 con 3 docentes y Sector 16 con 4 docentes.",estado:"Pendiente",liga:"",notas:"\"En seguimiento al Oficio Unido No. SE/SEB/DGEB/750/2026, de fecha 04 de\nseptiembre de 2026, emitido por la Dirección General de Educación Básica\""},
+{oficio:"DEP/DATP/298/2026",fechaOficio:"2026-09-14",asunto:"Instrumentos de Valoración de escritura Fase 3 Primer Momento",fechaLimite:"2026-09-30",accion:"Aplicación de la Valoración de escritura. Fase 3. \nPrimer momento referente al ciclo escolar 2026-2027\n\nFechas sugeridas de aplicacion: \ndel 21 al 30 septiembre 2026.\ndel 1 al 4 marzo de 2027\ndel 14 al 18 junio de 2027",estado:"Pendiente",liga:"https://drive.google.com/drive/folders/1B0bXmlkptnRdOK_M0LeVMJGPQ-g6DWEw",notas:"En el link, encontrará los instrumentos de la valoración, rúbricas y el concentrado de resultados."}
 ];
 
 /* ===================== CARGA / PERSISTENCIA ===================== */
@@ -1476,4 +1477,4 @@ setInterval(renderizar, 60000);
 
 
 
-<span id="PING_CONTENT_DLS_POPUP" style="display: none;"></span><div style="background-color: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; bottom: 15px; display: block; margin: 0px; opacity: 1; padding: 0px; position: fixed; right: 15px; z-index: 2147483647;"></div></body></html>
+<span id="PING_CONTENT_DLS_POPUP" style="display: none;"></span><div style="background-color: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; bottom: 15px; display: block; margin: 0px; opacity: 1; padding: 0px; position: fixed; right: 15px; z-index: 2147483647;"></div><span id="PING_CONTENT_DLS_POPUP" style="display: none;"></span><div style="background-color: transparent; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; bottom: 15px; display: block; margin: 0px; opacity: 1; padding: 0px; position: fixed; right: 15px; z-index: 2147483647;"></div></body></html>
